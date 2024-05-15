@@ -11,7 +11,6 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 public class MainActivity extends AppCompatActivity {
     private ImageLoader imageLoader;
-
     private ShapeableImageView main_IMG_menu;
     private ShapeableImageView main_IMG_logo;
     private ShapeableImageView main_BTN_games;
@@ -24,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViews();
         loadImages();
+        //handleButtons();
     }
 
     private void loadImages() {
