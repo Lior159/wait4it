@@ -13,6 +13,15 @@
         android:theme="@style/Theme.Wait4It"
         tools:targetApi="31">
         <activity
+            android:name=".Games.MemoryGame.UI.MemoryGameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Games.MemoryGame.UI.Memory_Menu"
+            android:exported="false" />
+        <activity
+            android:name=".Sudoku.SudokuTest"
+            android:exported="false" />
+        <activity
             android:name=".UI.RegisterActivity"
             android:exported="false" />
         <activity

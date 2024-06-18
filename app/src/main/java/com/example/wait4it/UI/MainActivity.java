@@ -1,10 +1,11 @@
 package com.example.wait4it.UI;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.media.Image;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.wait4it.Games.MemoryGame.UI.Memory_Menu;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.ImageLoader;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
         findViews();
         loadImages();
         //handleButtons();
+        main_BTN_games.setOnClickListener(v->{
+            Intent intent = new Intent(this, Memory_Menu.class);
+            startActivity(intent);
+        });
     }
 
     private void loadImages() {

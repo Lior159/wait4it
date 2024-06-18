@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Games.MemoryGame.UI.MemoryGameActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/memoryGame_LBL_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Memory Game - Level: "
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/memoryGame_LBL_timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/memoryGame_LBL_title"
+        android:padding="8dp"
+        android:text="00:00"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+    <GridView
+        android:id="@+id/memoryGame_TBL_grid"
+        android:layout_below="@id/memoryGame_LBL_timer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"
+        android:columnWidth="100dp"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:verticalSpacing="30dp"
+        android:horizontalSpacing="2dp"/>
+
+</RelativeLayout>
