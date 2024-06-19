@@ -65,7 +65,7 @@ public class MemoryGameLogic {
         Card firstCard = (Card) adapter.getItem(flippedIndices[0]);
         Card secondCard = (Card) adapter.getItem(flippedIndices[1]);
 
-        if (firstCard.getImageId() == secondCard.getImageId())
+        if (firstCard.getPrimaryImageId() == secondCard.getPrimaryImageId())
         {
             handleMatch();
             Arrays.fill(flippedIndices, -1);

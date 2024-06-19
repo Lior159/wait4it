@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.util.DisplayMetrics;
-import android.widget.GridView;
+import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wait4it.Games.MemoryGame.Adapters.CardAdapter;
 import com.example.wait4it.Games.MemoryGame.Interfaces.TimerControlListener;
@@ -16,9 +17,11 @@ import com.example.wait4it.R;
 import com.google.android.material.textview.MaterialTextView;
 
 public class MemoryGameActivity extends AppCompatActivity implements TimerControlListener {
-    private GridView memoryGame_TBL_grid;
+    private RecyclerView memoryGame_RCV_table;
     private MaterialTextView memoryGame_LBL_title;
     private MaterialTextView memoryGame_LBL_timer;
+
+    private CardAdapter adapter;
 
     private Handler timerHandler;
     private Runnable timerRunnable;
@@ -35,17 +38,24 @@ public class MemoryGameActivity extends AppCompatActivity implements TimerContro
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_game);
         findViews();
-
         Intent intent = getIntent();
         level = intent.getStringExtra("LEVEL");
         rows = intent.getIntExtra("ROWS",4);
         cols = intent.getIntExtra("COLS",2);
-        memoryGame_LBL_title.setText(String.format("Memory Game - Level: %s", level));
-
-        configureGridView();
+        initViews();
+        //configureGridView();
         configureTimer();
+    }
 
-        memoryGame_TBL_grid.setAdapter(new CardAdapter(this,rows*cols, this));
+    private void initViews() {
+        memoryGame_LBL_title.setText(String.format("Memory Game - Level: %s", level));
+        adapter = new CardAdapter(this,rows*cols, this);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,cols);
+        Log.d("GLM", "Level: " + level + ", cols: " + cols + ", rows: " + rows);
+        memoryGame_RCV_table.setLayoutManager(gridLayoutManager);
+        memoryGame_RCV_table.setAdapter(adapter);
+        memoryGame_RCV_table.setHasFixedSize(true);
+
     }
 
     private void configureTimer() {
@@ -63,20 +73,10 @@ public class MemoryGameActivity extends AppCompatActivity implements TimerContro
         };
     }
 
-
-    private void configureGridView() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int screenWidth = displayMetrics.widthPixels;
-        int columnWidth = (screenWidth - memoryGame_TBL_grid.getPaddingLeft() - memoryGame_TBL_grid.getPaddingRight() - ((cols - 1) * 10)) / cols;
-        memoryGame_TBL_grid.setNumColumns(cols);
-        memoryGame_TBL_grid.setColumnWidth(columnWidth);
-    }
-
     private void findViews() {
         memoryGame_LBL_title = findViewById(R.id.memoryGame_LBL_title);
         memoryGame_LBL_timer = findViewById(R.id.memoryGame_LBL_timer);
-        memoryGame_TBL_grid = findViewById(R.id.memoryGame_TBL_grid);
+        memoryGame_RCV_table = findViewById(R.id.memoryGame_RCV_table);
     }
     public void startTimer(){
         if (!timerStarted){
@@ -129,4 +129,15 @@ public class MemoryGameActivity extends AppCompatActivity implements TimerContro
         startActivity(intent);
         finish();
     }
+
+    /*
+    private void configureGridView() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
+        int columnWidth = (screenWidth - memoryGame_TBL_grid.getPaddingLeft() - memoryGame_TBL_grid.getPaddingRight() - ((cols - 1) * 10)) / cols;
+        memoryGame_TBL_grid.setNumColumns(cols);
+        memoryGame_TBL_grid.setColumnWidth(columnWidth);
+    }
+     */
 }

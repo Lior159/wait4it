@@ -31,16 +31,12 @@
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
-    <GridView
-        android:id="@+id/memoryGame_TBL_grid"
-        android:layout_below="@id/memoryGame_LBL_timer"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/memoryGame_RCV_table"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="auto_fit"
-        android:columnWidth="100dp"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:verticalSpacing="30dp"
-        android:horizontalSpacing="2dp"/>
+        android:layout_below="@id/memoryGame_LBL_timer"
+        android:padding="5dp"
+        android:scrollbars="none"/>
 
 </RelativeLayout>

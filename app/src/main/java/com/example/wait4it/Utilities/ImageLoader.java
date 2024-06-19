@@ -3,7 +3,6 @@ package com.example.wait4it.Utilities;
 import android.content.Context;
 
 import com.bumptech.glide.Glide;
-import com.example.wait4it.R;
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class ImageLoader {
@@ -15,19 +14,19 @@ public class ImageLoader {
         appContext = context;
     }
 
-    public void load (String link, ShapeableImageView imageView){
+    public void load (String link,int secondaryDrawableId, ShapeableImageView imageView){
         Glide.
                 with(appContext)
                 .load(link)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(secondaryDrawableId)
                 .into(imageView);
     }
 
-    public void load (int drawableId, ShapeableImageView imageView){
+    public void load (int primaryDrawableId, int secondaryDrawableId, ShapeableImageView imageView){
         Glide.
                 with(appContext)
-                .load(drawableId)
-                .placeholder(R.drawable.ic_launcher_background)
+                .load(primaryDrawableId)
+                .placeholder(secondaryDrawableId)
                 .into(imageView);
     }
 }

@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Wait4It"
         tools:targetApi="31">
         <activity
+            android:name=".Games.UI.GamesMainPage"
+            android:exported="false" />
+        <activity
             android:name=".Games.MemoryGame.UI.MemoryGameActivity"
             android:exported="false" />
         <activity

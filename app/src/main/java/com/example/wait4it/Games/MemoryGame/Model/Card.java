@@ -1,13 +1,15 @@
 package com.example.wait4it.Games.MemoryGame.Model;
 
 public class Card {
-    private final int imageId; // Identifier for the image/resource
+    private final int primaryImageId;
+    private final int secondaryImageId;
     private boolean isFlipped;
     private int count;
     private boolean isVisible;
 
-    public Card(int imageId) {
-        this.imageId = imageId;
+    public Card(int primaryImageId, int secondaryImageId) {
+        this.primaryImageId = primaryImageId;
+        this.secondaryImageId = secondaryImageId;
         this.isFlipped = false;
         this.count = 0;
         this.isVisible = true;
@@ -22,8 +24,11 @@ public class Card {
         return this.isVisible;
     }
 
-    public int getImageId() {
-        return imageId;
+    public int getPrimaryImageId() {
+        return primaryImageId;
+    }
+    public int getSecondaryImageId() {
+        return secondaryImageId;
     }
 
     public boolean isFlipped() {

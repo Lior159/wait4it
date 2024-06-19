@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,12 +9,12 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/main_IMG_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_more_vert"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="5dp"/>
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_more_vert" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/main_IMG_logo"
@@ -31,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/main_IMG_logo"
         android:layout_centerHorizontal="true"
-        android:layout_margin="18dp"
+        android:layout_marginTop="18dp"
         android:text="Activities"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -42,17 +41,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/main_LBL_title"
-        android:layout_marginTop="24dp"
         android:orientation="horizontal"
-        android:layout_margin="18dp"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:padding="18dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_BTN_games"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:src="@drawable/ic_launcher_background" />
+            android:layout_height="150dp"
+            android:layout_weight="3"
+            android:src="@drawable/games_temp"
+            android:scaleType="fitXY"/>
 
         <View
             android:layout_width="0dp"
@@ -62,18 +62,19 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_BTN_articles"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:src="@drawable/ic_launcher_background" />
+            android:layout_height="150dp"
+            android:layout_weight="3"
+            android:src="@drawable/articles_temp"
+            android:scaleType="fitXY"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/main_BTN_podcasts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_below="@id/main_LLC_gamesAndArticles"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_launcher_background"
-        android:layout_margin="18dp"/>
-
+        android:layout_marginTop="24dp"
+        android:src="@drawable/podcast_temp"
+        android:scaleType="fitXY"/>
 </RelativeLayout>
