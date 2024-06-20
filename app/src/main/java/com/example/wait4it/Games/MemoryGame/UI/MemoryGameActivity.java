@@ -50,9 +50,23 @@ public class MemoryGameActivity extends AppCompatActivity implements TimerContro
     private void initViews() {
         memoryGame_LBL_title.setText(String.format("Memory Game - Level: %s", level));
         adapter = new CardAdapter(this,rows*cols, this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,cols);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,cols){
+            @Override
+            public boolean canScrollHorizontally() {
+                return false;
+            }
+
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+
+        };
+
+
         Log.d("GLM", "Level: " + level + ", cols: " + cols + ", rows: " + rows);
         memoryGame_RCV_table.setLayoutManager(gridLayoutManager);
+
         memoryGame_RCV_table.setAdapter(adapter);
         memoryGame_RCV_table.setHasFixedSize(true);
 

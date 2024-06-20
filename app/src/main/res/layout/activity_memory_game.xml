@@ -36,7 +36,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/memoryGame_LBL_timer"
-        android:padding="5dp"
-        android:scrollbars="none"/>
+        android:layout_margin="8dp"
+        android:background="@color/cream"
+        android:scrollbars="none"
+        tools:listitem="@layout/memorygame_card_item"/>
 
 </RelativeLayout>

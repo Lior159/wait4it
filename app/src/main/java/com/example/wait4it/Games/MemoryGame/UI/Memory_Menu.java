@@ -18,9 +18,9 @@ public class Memory_Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_menu);
         findViews();
-        memoryGame_LBL_easy.setOnClickListener(v->startGame("Easy",4,2));
-        memoryGame_LBL_normal.setOnClickListener(v->startGame("Normal",3,6));
-        memoryGame_LBL_hard.setOnClickListener(v->startGame("Hard",5,6));
+        memoryGame_LBL_easy.setOnClickListener(v->startGame("Easy",4,3));
+        memoryGame_LBL_normal.setOnClickListener(v->startGame("Normal",4,4));
+        memoryGame_LBL_hard.setOnClickListener(v->startGame("Hard",6,5));
 
     }
 

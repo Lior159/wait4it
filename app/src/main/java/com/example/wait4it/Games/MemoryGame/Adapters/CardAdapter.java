@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wait4it.Games.MemoryGame.Interfaces.TimerControlListener;
@@ -40,7 +41,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         Resources res = context.getResources();
         String packageName = context.getPackageName();
 
-        ArrayList<Card> generatedCards = new ArrayList<>();
+        cards = new ArrayList<>();
         for (int i = 0; i < numCards/2; i++) {
             String resourceNamePrimary = String.format("memorygame_card%02d", i);
             String resourceNameSecondary = String.format("memorygame_card%02d_temp", i);
@@ -48,8 +49,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             int secondaryId = res.getIdentifier(resourceNameSecondary, "drawable", packageName);
             Log.d("CardAdapter", "resourceNamePrimary: " + resourceNamePrimary + ", Primary ID: " + primaryId);
             Log.d("CardAdapter", "resourceNameSecondary: " + resourceNameSecondary + ", Secondary ID: " + secondaryId);
-            generatedCards.add(new Card(primaryId, secondaryId));
-            generatedCards.add(new Card(primaryId, secondaryId));
+            cards.add(new Card(primaryId, secondaryId));
+            cards.add(new Card(primaryId, secondaryId));
         }
     }
 
@@ -57,18 +58,47 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.memorygame_card_item, parent, false);
+
+        int spanCount = ((GridLayoutManager) ((RecyclerView)parent).getLayoutManager()).getSpanCount();
+        int numOfRows = cards.size() / spanCount;
+        //int itemWidth = parent.getWidth() / spanCount;
+        int itemHeight = parent.getHeight() / numOfRows;
+
+        int width = parent.getWidth() - 100;
+        int div = (int) Math.floor(Math.sqrt(cards.size()));
+        width/=div;
+
+
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+
+        //layoutParams.width = (int)(itemHeight*2.5/3.5);
+        layoutParams.height = (int)((width / 79) * 127.5);
+        view.setLayoutParams(layoutParams);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Log.d("CA", "onBindViewHolder: setting "+position);
         Card card = cards.get(position);
         ImageLoader imageLoader = new ImageLoader(context);
+
+//        holder.memoryGame_IMG_cardImage.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//            @Override
+//            public boolean onPreDraw() {
+//                holder.memoryGame_IMG_cardImage.getViewTreeObserver().removeOnPreDrawListener(this);
+//                int temp = (int) holder.memoryGame_IMG_cardImage.getWidth();
+//                holder.memoryGame_IMG_cardImage.setMaxHeight(50);
+//                return false;
+//            }
+//        });
+
         if(card.getVisible()){
             if (card.isFlipped())
                 imageLoader.load(card.getPrimaryImageId(), card.getSecondaryImageId(), holder.memoryGame_IMG_cardImage);
             else
-                imageLoader.load(R.drawable.memorygame_card_back, R.drawable.memorygame_card_back_temp, holder.memoryGame_IMG_cardImage);
+                imageLoader.load(R.drawable.card_back, R.drawable.memorygame_card_back_temp, holder.memoryGame_IMG_cardImage);
 
             holder.memoryGame_IMG_cardImage.setOnClickListener(v->{
                 memoryGameLogic.flipCard(position);
