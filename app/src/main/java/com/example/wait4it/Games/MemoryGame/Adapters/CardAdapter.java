@@ -19,6 +19,7 @@ import com.example.wait4it.Utilities.ImageLoader;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     private Context context;
@@ -52,6 +53,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             cards.add(new Card(primaryId, secondaryId));
             cards.add(new Card(primaryId, secondaryId));
         }
+        Collections.shuffle(cards);
     }
 
     @NonNull
