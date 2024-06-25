@@ -4,8 +4,12 @@ package com.example.wait4it.Games.GuessTheCounty.Model;
 public class Country {
     private String name;
     private int flagImage;
+    private boolean isDoneAlready;
 
-    public Country() {
+    public Country(String name, int flagImage) {
+        this.name = name;
+        this.flagImage = flagImage;
+        this.isDoneAlready = false;
     }
 
     public String getName() {
@@ -26,4 +30,12 @@ public class Country {
         return this;
     }
 
+    public boolean isDoneAlready() {
+        return isDoneAlready;
+    }
+
+    public Country setDoneAlready() {
+        this.isDoneAlready = true;
+        return this;
+    }
 }
