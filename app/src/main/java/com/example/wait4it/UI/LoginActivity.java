@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
 public class LoginActivity extends AppCompatActivity{
-    private TextInputEditText login_ET_email;
+    private TextInputEditText login_ET_username;
     private TextInputEditText login_ET_password;
     private MaterialButton login_BTN_login;
     private MaterialTextView login_MTV_register;
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private void loginUser() {
-        String email = login_ET_email.getText().toString().trim();
+        String email = login_ET_username.getText().toString().trim();
         String password = login_ET_password.getText().toString().trim();
 
         if (email.isEmpty()) {
@@ -110,9 +110,8 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private void findViews() {
-        login_ET_email = findViewById(R.id.login_ET_email);
+        login_ET_username = findViewById(R.id.login_ET_username);
         login_ET_password = findViewById(R.id.login_ET_password);
         login_BTN_login = findViewById(R.id.login_BTN_login);
-        login_MTV_register = findViewById(R.id.login_MTV_register);
     }
 }

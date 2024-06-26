@@ -49,9 +49,9 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_BTN_games"
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="140dp"
             android:layout_weight="3"
-            android:src="@drawable/games_temp"
+            android:src="@drawable/menu_games"
             android:scaleType="fitXY"/>
 
         <View
@@ -62,19 +62,41 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/main_BTN_articles"
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="140dp"
             android:layout_weight="3"
-            android:src="@drawable/articles_temp"
+            android:src="@drawable/menu_articles"
             android:scaleType="fitXY"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/main_BTN_podcasts"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/main_LLC_podcastsAndNews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/main_LLC_gamesAndArticles"
-        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
         android:layout_marginTop="24dp"
-        android:src="@drawable/podcast_temp"
-        android:scaleType="fitXY"/>
+        android:padding="18dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_BTN_news"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_weight="3"
+            android:src="@drawable/menu_news"
+            android:scaleType="fitXY"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/main_BTN_podcasts"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_weight="3"
+            android:src="@drawable/menu_podcasts"
+            android:scaleType="fitXY"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </RelativeLayout>

@@ -87,7 +87,5 @@ public class RegisterActivity extends AppCompatActivity {
         register_ET_password = findViewById(R.id.register_ET_password);
         register_BTN_register = findViewById(R.id.register_BTN_register);
         register_IMG_logo = findViewById(R.id.register_IMG_logo);
-        register_ET_firstName = findViewById(R.id.register_ET_firstName);
-        register_ET_lastName = findViewById(R.id.register_ET_lastName);
     }
 }
