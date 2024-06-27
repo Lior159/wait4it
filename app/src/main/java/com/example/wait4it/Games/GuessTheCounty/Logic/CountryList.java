@@ -107,7 +107,7 @@ public class CountryList {
         answers.add(mainCountry.getName());
         Collections.shuffle(countries);
         for (Country country:countries) {
-            if(answers.size() < 4 && !answers.equals(country.getName()))
+            if(answers.size() < 4 && !mainCountry.getName().equals(country.getName()))
                 answers.add(country.getName());
         }
         Collections.shuffle(answers);
