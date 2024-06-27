@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="cream">#FAEED1</color>
     <color name="blue_400">#5d92e8</color>
+    <color name="red_wrong">#FF0019</color>
+    <color name="green_right">#00FF08</color>
 </resources>

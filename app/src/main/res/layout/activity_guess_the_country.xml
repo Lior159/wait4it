@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cream"
+    tools:context=".Games.GuessTheCounty.UI.GuessTheCountryActivity">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/guessTheCountry_LLC_lives"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:layout_alignParentEnd="true">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/guessTheCountry_IMG_heart0"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/heart"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/guessTheCountry_IMG_heart1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/heart"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/guessTheCountry_IMG_heart2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/heart"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/guessTheCountry_LBL_title"
+        android:layout_below="@id/guessTheCountry_LLC_lives"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Guess the Country"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/guessTheCountry_LBL_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/guessTheCountry_LBL_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Score: 0"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/guessTheCountry_LBL_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/guessTheCountry_LBL_score"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="00:00"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+
+    <!-- Flag Image -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/guessTheCountry_IMG_flag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/guessTheCountry_LLC_options"
+        android:layout_below="@id/guessTheCountry_LBL_timer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_launcher_background" />
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/guessTheCountry_LLC_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/guessTheCountry_BTN_option0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/guessTheCountry_IMG_flag"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:text="Option 1"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/guessTheCountry_BTN_option1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/guessTheCountry_BTN_option0"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:text="Option 2"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/guessTheCountry_BTN_option2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/guessTheCountry_BTN_option1"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:text="Option 3"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/guessTheCountry_BTN_option3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/guessTheCountry_BTN_option2"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:text="Option 4"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

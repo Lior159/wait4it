@@ -22,4 +22,13 @@ public class GameItem {
     public Class<?> getActivityClass() {
         return activityClass;
     }
+
+    @Override
+    public String toString() {
+        return "GameItem{" +
+                "name='" + name + '\'' +
+                ", icon=" + icon +
+                ", activityClass=" + activityClass +
+                '}';
+    }
 }
