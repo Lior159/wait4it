@@ -20,28 +20,32 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/hangman_IMG_level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/hangman_LBL_title"
+        android:layout_above="@id/hangman_LLC_underscores"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_launcher_background" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/hangman_LBL_underscores"
-        android:layout_width="wrap_content"
+        android:id="@+id/hangman_LLC_underscores"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/hangman_IMG_level"
+        android:layout_above="@id/hangman_LLC_keyboard"
+        android:layout_marginBottom="150dp"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
         android:gravity="center"
-        android:padding="4dp"/>
+        android:orientation="horizontal"
+        android:padding="4dp" />
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/hangman_LLC_keyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -54,20 +58,19 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/white">
+            android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/hangman_BTN_A"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="A"
+                android:text='A'
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="30sp"
-                android:backgroundTintMode="@color/white"
-                android:background="@color/white"/>
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -77,12 +80,14 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/hangman_BTN_B"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="B"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp"/>
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -97,7 +102,9 @@
                 android:text="C"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -112,7 +119,9 @@
                 android:text="D"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -127,7 +136,9 @@
                 android:text="E"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -142,7 +153,9 @@
                 android:text="F"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -157,12 +170,16 @@
                 android:text="G"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.25" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/hangman_BTN_H"
@@ -172,7 +189,9 @@
                 android:text="H"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -187,16 +206,14 @@
                 android:text="I"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <!-- Second Row with 8 buttons (J-Q) -->
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.25" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/hangman_BTN_J"
@@ -206,12 +223,14 @@
                 android:text="J"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="0.4286" />
+                android:layout_weight="0.25" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/hangman_BTN_K"
@@ -221,7 +240,9 @@
                 android:text="K"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -236,7 +257,9 @@
                 android:text="L"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -251,120 +274,141 @@
                 android:text="M"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.4286" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/hangman_BTN_N"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="N"
-                android:textColor="@color/black"
-                android:textStyle="bold"
                 android:textSize="30sp"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.4286" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/hangman_BTN_O"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="O"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="30sp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.4286" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/hangman_BTN_P"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="P"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="30sp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.4286" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/hangman_BTN_Q"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Q"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="30sp" />
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/hangman_BTN_R"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="R"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="30sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/hangman_BTN_N"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="N"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:padding="5dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4286" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/hangman_BTN_O"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="O"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:padding="5dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4286" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/hangman_BTN_P"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="P"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:padding="5dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4286"
+            android:layout_gravity="center"
+            android:padding="5dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/hangman_BTN_Q"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Q"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="0.25" />
+                android:layout_weight="0.4286" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/hangman_BTN_S"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="S"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="30sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/hangman_BTN_R"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="R"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:padding="5dp"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.25" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.25" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/hangman_BTN_T"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="T"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="30sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/hangman_BTN_S"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="S"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:padding="5dp"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.25" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.25" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/hangman_BTN_T"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="T"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:padding="5dp"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/hangman_BTN_U"
@@ -374,7 +418,9 @@
                 android:text="U"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -389,7 +435,9 @@
                 android:text="V"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -404,7 +452,9 @@
                 android:text="W"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -419,7 +469,9 @@
                 android:text="X"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -434,7 +486,9 @@
                 android:text="Y"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -449,10 +503,12 @@
                 android:text="Z"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_gravity="center"
+                android:padding="5dp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-
 
 </RelativeLayout>
