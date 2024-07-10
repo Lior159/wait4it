@@ -10,6 +10,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.wait4it.Games.Hangman.Logic.HangmanLogic;
+import com.example.wait4it.Games.Hangman.Model.Word;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.ImageLoader;
 import com.google.android.material.button.MaterialButton;
@@ -18,6 +19,9 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class HangmanActivity extends AppCompatActivity {
     private MaterialTextView hangman_LBL_title;
+    private final int INDEX_CORRECTOR_SECOND_ROW = 7;
+    private final int INDEX_CORRECTOR_THIRD_ROW = 13;
+    private final int INDEX_CORRECTOR_FOURTH_ROW = 20;
     private ShapeableImageView hangman_IMG_level;
     private MaterialButton[] hangman_BTN_firstRowAtoG = new MaterialButton[7];
     private MaterialButton[] hangman_BTN_secondRowHtoM = new MaterialButton[6];
@@ -26,9 +30,9 @@ public class HangmanActivity extends AppCompatActivity {
     private LinearLayoutCompat hangman_LLC_underscores;
     private MaterialTextView[] letterViews;
     private ImageLoader imageLoader;
-    private String currentWord;
+    private Word currentWord;
+    private boolean isCorrect=false;
     private HangmanLogic hangmanLogic;
-    int status =0;
 
 
     @Override
@@ -48,13 +52,14 @@ public class HangmanActivity extends AppCompatActivity {
     }
 
     private void setupGame() {
+        currentWord = hangmanLogic.getSecretWord();
+        setupWordViews(currentWord.getWord());
 
     }
 
     private void loadImage() {
-        String template = String.format("hangman_%d", status);
+        String template = String.format("hangman_%d", hangmanLogic.getWrongAnswers());
         imageLoader.load(getResources().getIdentifier(template, "drawable", getPackageName()), R.drawable.ic_launcher_background, hangman_IMG_level);
-        status++;
     }
 
     private void handleKeyboard() {
@@ -64,39 +69,59 @@ public class HangmanActivity extends AppCompatActivity {
                 hangman_BTN_firstRowAtoG[index].setOnClickListener(v->{
                     hangman_BTN_firstRowAtoG[index].setOnClickListener(null);
                     hangman_BTN_firstRowAtoG[index].setClickable(false);
-                    handleClick(hangman_BTN_firstRowAtoG[index].getText());
+                    isCorrect = hangmanLogic.checkLetter(hangman_BTN_firstRowAtoG[index].getText().toString());
+                    if(isCorrect)
+                        correctProcedure(hangman_BTN_firstRowAtoG[index]);
+                    else
+                        wrongProcedure(hangman_BTN_firstRowAtoG[index]);
                     hangman_BTN_firstRowAtoG[index].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
                     loadImage();
                 });
             }
             else if(i>='H' && i<='M')
             {
-                hangman_BTN_secondRowHtoM[index-7].setOnClickListener(v->{
-                    hangman_BTN_secondRowHtoM[index-7].setOnClickListener(null);
-                    hangman_BTN_secondRowHtoM[index-7].setClickable(false);
-                    handleClick(hangman_BTN_secondRowHtoM[index].getText());
-                    hangman_BTN_secondRowHtoM[index-7].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
+                hangman_BTN_secondRowHtoM[index-INDEX_CORRECTOR_SECOND_ROW].setOnClickListener(v->{
+                    hangman_BTN_secondRowHtoM[index-INDEX_CORRECTOR_SECOND_ROW].setOnClickListener(null);
+                    hangman_BTN_secondRowHtoM[index-INDEX_CORRECTOR_SECOND_ROW].setClickable(false);
+                    hangman_BTN_secondRowHtoM[index-INDEX_CORRECTOR_SECOND_ROW].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
                 });
             }
             else if(i>='N' && i<='T')
             {
-                hangman_BTN_thirdRowNtoT[index-13].setOnClickListener(v->{
-                    hangman_BTN_thirdRowNtoT[index-13].setOnClickListener(null);
-                    hangman_BTN_thirdRowNtoT[index-13].setClickable(false);
-                    handleClick(hangman_BTN_thirdRowNtoT[index].getText());
-                    hangman_BTN_thirdRowNtoT[index-13].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
+                hangman_BTN_thirdRowNtoT[index-INDEX_CORRECTOR_THIRD_ROW].setOnClickListener(v->{
+                    hangman_BTN_thirdRowNtoT[index-INDEX_CORRECTOR_THIRD_ROW].setOnClickListener(null);
+                    hangman_BTN_thirdRowNtoT[index-INDEX_CORRECTOR_THIRD_ROW].setClickable(false);
+                    hangman_BTN_thirdRowNtoT[index-INDEX_CORRECTOR_THIRD_ROW].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
                 });
             }
             else
             {
-                hangman_BTN_fourthRowUtoZ[index - 20].setOnClickListener(v->{
-                    hangman_BTN_fourthRowUtoZ[index - 20].setOnClickListener(null);
-                    hangman_BTN_fourthRowUtoZ[index - 20].setClickable(false);
-                    handleClick(hangman_BTN_fourthRowUtoZ[index].getText());
-                    hangman_BTN_fourthRowUtoZ[index - 20].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
+                hangman_BTN_fourthRowUtoZ[index - INDEX_CORRECTOR_FOURTH_ROW].setOnClickListener(v->{
+                    hangman_BTN_fourthRowUtoZ[index - INDEX_CORRECTOR_FOURTH_ROW].setOnClickListener(null);
+                    hangman_BTN_fourthRowUtoZ[index - INDEX_CORRECTOR_FOURTH_ROW].setClickable(false);
+                    hangman_BTN_fourthRowUtoZ[index - INDEX_CORRECTOR_FOURTH_ROW].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
                 });
             }
             //20
+
+        }
+    }
+
+    private void wrongProcedure(MaterialButton materialButton) {
+        materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.red_wrong));
+        hangmanLogic.incrementWrongAnswers();
+        loadImage();
+    }
+
+    private void correctProcedure(MaterialButton materialButton) {
+        materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.green_right));
+        fillWordViews(materialButton.getText().toString());
+    }
+
+    private void fillWordViews(String letterAsString) {
+        char letter = letterAsString.charAt(0);
+        for (char c: currentWord)
+             ) {
 
         }
     }
@@ -115,11 +140,11 @@ public class HangmanActivity extends AppCompatActivity {
             materialTextView.setLayoutParams(new LinearLayoutCompat.LayoutParams(
                     LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
-            if(word.charAt(i) != ' ') {
-                materialTextView.setText("_");
+            if(word.charAt(i) == ' ') {
+                materialTextView.setText("    ");
             }
             else
-                materialTextView.setText("    ");
+                materialTextView.setText("_");
             materialTextView.setTextSize(30);
             materialTextView.setGravity(Gravity.CENTER);
             materialTextView.setPadding(8,8,8,8);
