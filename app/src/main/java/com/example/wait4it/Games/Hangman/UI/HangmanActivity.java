@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.wait4it.Games.Hangman.Logic.HangmanLogic;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.ImageLoader;
 import com.google.android.material.button.MaterialButton;
@@ -24,19 +25,29 @@ public class HangmanActivity extends AppCompatActivity {
     private MaterialButton[] hangman_BTN_fourthRowUtoZ = new MaterialButton[6];
     private LinearLayoutCompat hangman_LLC_underscores;
     private MaterialTextView[] letterViews;
-    ImageLoader imageLoader = new ImageLoader(this);
+    private ImageLoader imageLoader;
+    private String currentWord;
+    private HangmanLogic hangmanLogic;
     int status =0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hangman);
         findViews();
-        String word = "Liverpool";
+        initViews();
+        /*String word = "Liverpool";
         String word2 = "Manchester United";
-        setupWordViews(word2);
-        handleKeyboard();
+        setupWordViews(word2);*/
+        setupGame();
         loadImage();
+        handleKeyboard();
+
+
+    }
+
+    private void setupGame() {
 
     }
 
@@ -53,6 +64,7 @@ public class HangmanActivity extends AppCompatActivity {
                 hangman_BTN_firstRowAtoG[index].setOnClickListener(v->{
                     hangman_BTN_firstRowAtoG[index].setOnClickListener(null);
                     hangman_BTN_firstRowAtoG[index].setClickable(false);
+                    handleClick(hangman_BTN_firstRowAtoG[index].getText());
                     hangman_BTN_firstRowAtoG[index].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
                     loadImage();
                 });
@@ -62,6 +74,7 @@ public class HangmanActivity extends AppCompatActivity {
                 hangman_BTN_secondRowHtoM[index-7].setOnClickListener(v->{
                     hangman_BTN_secondRowHtoM[index-7].setOnClickListener(null);
                     hangman_BTN_secondRowHtoM[index-7].setClickable(false);
+                    handleClick(hangman_BTN_secondRowHtoM[index].getText());
                     hangman_BTN_secondRowHtoM[index-7].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
                 });
             }
@@ -70,6 +83,7 @@ public class HangmanActivity extends AppCompatActivity {
                 hangman_BTN_thirdRowNtoT[index-13].setOnClickListener(v->{
                     hangman_BTN_thirdRowNtoT[index-13].setOnClickListener(null);
                     hangman_BTN_thirdRowNtoT[index-13].setClickable(false);
+                    handleClick(hangman_BTN_thirdRowNtoT[index].getText());
                     hangman_BTN_thirdRowNtoT[index-13].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
                 });
             }
@@ -78,12 +92,17 @@ public class HangmanActivity extends AppCompatActivity {
                 hangman_BTN_fourthRowUtoZ[index - 20].setOnClickListener(v->{
                     hangman_BTN_fourthRowUtoZ[index - 20].setOnClickListener(null);
                     hangman_BTN_fourthRowUtoZ[index - 20].setClickable(false);
+                    handleClick(hangman_BTN_fourthRowUtoZ[index].getText());
                     hangman_BTN_fourthRowUtoZ[index - 20].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
                 });
             }
             //20
 
         }
+    }
+
+    private void handleClick(CharSequence text) {
+
     }
 
     private void setupWordViews(String word) {
@@ -107,6 +126,10 @@ public class HangmanActivity extends AppCompatActivity {
             letterViews[i] = materialTextView;
             hangman_LLC_underscores.addView(materialTextView);
         }
+    }
+    private void initViews() {
+        imageLoader = new ImageLoader(this);
+        hangmanLogic = new HangmanLogic();
     }
 
     private void findViews() {
