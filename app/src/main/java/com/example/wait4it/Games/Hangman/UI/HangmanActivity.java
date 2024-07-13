@@ -6,13 +6,13 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.wait4it.Games.Hangman.Logic.HangmanLogic;
 import com.example.wait4it.Games.Hangman.Model.Word;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.ImageLoader;
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
@@ -27,7 +27,7 @@ public class HangmanActivity extends AppCompatActivity {
     private MaterialButton[] hangman_BTN_secondRowHtoM = new MaterialButton[6];
     private MaterialButton[] hangman_BTN_thirdRowNtoT = new MaterialButton[7];
     private MaterialButton[] hangman_BTN_fourthRowUtoZ = new MaterialButton[6];
-    private LinearLayoutCompat hangman_LLC_underscores;
+    private FlexboxLayout hangman_LLC_underscores;
     private MaterialTextView[] letterViews;
     private ImageLoader imageLoader;
     private Word currentWord;
@@ -52,9 +52,12 @@ public class HangmanActivity extends AppCompatActivity {
     }
 
     private void setupGame() {
-        currentWord = hangmanLogic.getSecretWord();
-        setupWordViews(currentWord.getWord());
-
+        currentWord = hangmanLogic.getRandomWord();
+        if(currentWord != null)
+            Log.d("Current", "CurrentWord: " + currentWord + ", As String: " + currentWord.getWordAsString() + ", done? " + currentWord.isDoneAlready());
+        else
+            Log.d("Current", "currentWord is null");
+        setupWordViews(currentWord.getWordAsString());
     }
 
     private void loadImage() {
@@ -74,7 +77,6 @@ public class HangmanActivity extends AppCompatActivity {
                         correctProcedure(hangman_BTN_firstRowAtoG[index]);
                     else
                         wrongProcedure(hangman_BTN_firstRowAtoG[index]);
-                    hangman_BTN_firstRowAtoG[index].setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.blue_400));
                     loadImage();
                 });
             }
@@ -115,19 +117,17 @@ public class HangmanActivity extends AppCompatActivity {
 
     private void correctProcedure(MaterialButton materialButton) {
         materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.green_right));
-        fillWordViews(materialButton.getText().toString());
+        fillCorrectLetterInWordViews(materialButton.getText().toString());
     }
 
-    private void fillWordViews(String letterAsString) {
+    private void fillCorrectLetterInWordViews(String letterAsString) {
         char letter = letterAsString.charAt(0);
-        for (char c: currentWord)
-             ) {
+        for(int i = 0; i < currentWord.getWordAsString().length(); i++) {
+               if(currentWord.getWordAsString().charAt(i) == letter){
+                   letterViews[i].setText(String.valueOf(letterAsString.toLowerCase()));
+               }
 
         }
-    }
-
-    private void handleClick(CharSequence text) {
-
     }
 
     private void setupWordViews(String word) {
@@ -137,11 +137,14 @@ public class HangmanActivity extends AppCompatActivity {
 
         for (int i = 0; i < word.length(); i++) {
             MaterialTextView materialTextView = new MaterialTextView(this);
-            materialTextView.setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                    LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
+            materialTextView.setLayoutParams(new FlexboxLayout.LayoutParams(
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
             if(word.charAt(i) == ' ') {
                 materialTextView.setText("    ");
+            }
+            else if(word.charAt(i) == '-'){
+                materialTextView.setText("-");
             }
             else
                 materialTextView.setText("_");

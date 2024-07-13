@@ -40,12 +40,15 @@ public class HangmanData {
 
     public Word getRandomWord(){
         List<Word> availableWords = words.stream()
-                .filter(word -> word.isDoneAlready())
+                .filter(word -> !word.isDoneAlready())
                 .collect(Collectors.toList());
         if(availableWords.isEmpty())
             return null;
         Word selectedWord = availableWords.get(rnd.nextInt(availableWords.size()));
         selectedWord.setDoneAlready();
         return selectedWord;
+    }
+    public ArrayList<Word> getWords(){
+        return this.words;
     }
 }

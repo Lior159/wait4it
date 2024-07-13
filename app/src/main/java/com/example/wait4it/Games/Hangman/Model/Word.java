@@ -9,7 +9,7 @@ public class Word {
         this.isDoneAlready = false;
     }
 
-    public String getWord() {
+    public String getWordAsString() {
         return this.word;
     }
 

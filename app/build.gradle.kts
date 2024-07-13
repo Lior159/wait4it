@@ -39,4 +39,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.webkit:webkit:1.11.0")
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

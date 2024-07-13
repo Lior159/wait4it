@@ -3,8 +3,6 @@ package com.example.wait4it.Games.Hangman.Logic;
 
 import com.example.wait4it.Games.Hangman.Model.Word;
 
-import java.util.HashSet;
-
 public class HangmanLogic {
     private static final int ANSWER_POINTS = 10;
     private static final int LIFE = 7;
@@ -13,7 +11,6 @@ public class HangmanLogic {
     private int wrongAnswers;
     private HangmanData data;
     private Word secretWord;
-    private HashSet<Character> guessedLetters;
 
 
     public HangmanLogic()
@@ -36,23 +33,21 @@ public class HangmanLogic {
         return wrongAnswers;
     }
 
-    public HangmanData getData() {
-        return data;
-    }
-
     public Word getSecretWord() {
         return secretWord;
     }
-
-    public HashSet<Character> getGuessedLetters() {
-        return guessedLetters;
-    }
     public Word getRandomWord(){
-        return this.data.getRandomWord();
+        secretWord = this.data.getRandomWord();
+        return secretWord;
     }
 
-    public boolean checkLetter(String letter) {
-        return this.getSecretWord().getWord().toLowerCase().contains(letter.toLowerCase());
+    public boolean checkLetter(String temp) {
+        char letter = temp.toLowerCase().charAt(0);
+        for (char c: secretWord.getWordAsString().toCharArray()){
+            if(c == letter)
+                return true;
+        }
+        return false;
     }
 
     public void incrementWrongAnswers() {

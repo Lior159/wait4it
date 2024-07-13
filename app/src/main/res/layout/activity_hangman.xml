@@ -32,17 +32,16 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_launcher_background" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/hangman_LLC_underscores"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/hangman_LLC_keyboard"
+        app:flexWrap="wrap"
+        app:alignItems="center"
+        app:justifyContent="center"
         android:layout_marginBottom="150dp"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:orientation="horizontal"
         android:padding="4dp" />
-
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/hangman_LLC_keyboard"
