@@ -1,62 +1,73 @@
 package com.example.wait4it.Utilities;
 
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.example.wait4it.Interfaces.HttpCallback;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class HttpUtil {
+    private static OkHttpClient client = new OkHttpClient();
 
-    // Static method for sending a GET request
-    public static String sendGetRequest(String urlString) throws Exception {
-        HttpURLConnection connection = createConnection(urlString, "GET");
-        return getResponse(connection);
-    }
-
-    // Static method for sending a POST request
-    public static String sendPostRequest(String urlString, String jsonInputString) throws Exception {
-        HttpURLConnection connection = createConnection(urlString, "POST");
-        sendRequestBody(connection, jsonInputString);
-        return getResponse(connection);
-    }
-
-    // Helper method to create and configure the connection
-    private static HttpURLConnection createConnection(String urlString, String method) throws Exception {
-        URL url = new URL(urlString);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod(method);
-        connection.setRequestProperty("Content-Type", "application/json; utf-8");
-        connection.setRequestProperty("Accept", "application/json");
-        if (method.equals("POST")) {
-            connection.setDoOutput(true);
-        }
-        return connection;
-    }
-
-    // Helper method to send the request body (for POST)
-    private static void sendRequestBody(HttpURLConnection connection, String jsonInputString) throws Exception {
-        try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes("utf-8");
-            os.write(input, 0, input.length);
-        }
-    }
-
-    // Helper method to handle and return the response
-    private static String getResponse(HttpURLConnection connection) throws Exception {
-        int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = in.readLine()) != null) {
-                    response.append(line.trim());
+    public static void get(String url, HttpCallback callback) {
+        Request request = new Request.Builder().url(url).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                if (callback != null) {
+                    callback.onFailure(e);
                 }
-                return response.toString();
             }
-        } else {
-            throw new Exception("Request failed with response code: " + responseCode);
-        }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (callback != null && response.body() != null) {
+                    callback.onSuccess(response);
+                }
+            }
+        });
+    }
+
+    public static void postUser(String email, String userName, String password, HttpCallback callback) {
+        String url = "http://192.168.7.7:8000/signup";
+        RequestBody requestBody = new FormBody.Builder()
+                .add("email", email)
+                .add("password", password)
+                .add("userName", userName)
+                .build();
+
+        Request request = new Request.Builder().url(url).post(requestBody).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                if (callback != null) {
+                    callback.onFailure(e);
+                }
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (callback != null && response.body() != null) {
+                    callback.onSuccess(response);
+                }
+            }
+        });
     }
 }

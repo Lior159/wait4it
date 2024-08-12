@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wait4it.Games.UI.GamesMainPage;
+import com.example.wait4it.Model.User;
 import com.example.wait4it.Podcasts.UI.PodcastsMainPage;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.ImageLoader;

@@ -1,35 +1,24 @@
 package com.example.wait4it.Model;
 
 public class User {
-    private String firstName;
-    private String lastName;
     private String email;
-    private String id;
+    private String username;
+    private String password;
 
     public User() {
     }
-    public User(String firstName, String lastName, String email, String id) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String email, String password, String username) {
         this.email = email;
-        this.id = id;
+        this.password = password;
+        this.username = username;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public User setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public User setLastName(String lastName) {
-        this.lastName = lastName;
+    public User setUsername(String userName) {
+        this.username = userName;
         return this;
     }
 
@@ -42,12 +31,12 @@ public class User {
         return this;
     }
 
-    public String getId() {
-        return id;
+    public String getPassword() {
+        return password;
     }
 
-    public User setId(String id) {
-        this.id = id;
+    public User setPassword(String password) {
+        this.password = password;
         return this;
     }
 }

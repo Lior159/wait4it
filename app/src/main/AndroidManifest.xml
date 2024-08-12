@@ -19,9 +19,6 @@
             android:name=".Games.GuessTheCounty.UI.GuessTheCountryActivity"
             android:exported="false" />
         <activity
-            android:name=".Games.Sudoku.UI.SudokuGameActivity"
-            android:exported="false" />
-        <activity
             android:name=".Podcasts.UI.PodcastsMainPage"
             android:exported="false" />
         <activity
@@ -34,11 +31,9 @@
             android:name=".Games.MemoryGame.UI.Memory_Menu"
             android:exported="false" />
         <activity
-            android:name=".Sudoku.SudokuTest"
-            android:exported="false" />
-        <activity
             android:name=".UI.RegisterActivity"
-            android:exported="false" />
+            android:exported="false" >
+        </activity>
         <activity
             android:name=".UI.LoginActivity"
             android:exported="false" />
