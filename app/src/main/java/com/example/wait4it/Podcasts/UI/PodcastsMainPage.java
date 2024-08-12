@@ -31,6 +31,6 @@ public class PodcastsMainPage extends AppCompatActivity {
             }
         });
 
-        myWebView.loadUrl("http://192.168.7.5:8000/podcasts");
+        myWebView.loadUrl("http://192.168.7.6:8000/news");
     }
 }

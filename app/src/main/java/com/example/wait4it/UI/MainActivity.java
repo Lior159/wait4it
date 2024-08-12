@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private ShapeableImageView main_IMG_menu;
     private ShapeableImageView main_IMG_logo;
     private ShapeableImageView main_BTN_games;
+    private ShapeableImageView main_BTN_news;
     private ShapeableImageView main_BTN_articles;
     private ShapeableImageView main_BTN_podcasts;
 
@@ -40,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
         imageLoader = new ImageLoader(this);
         imageLoader.load(R.drawable.logo, R.drawable.ic_launcher_background, main_IMG_logo);
         imageLoader.load(R.drawable.ic_more_vert, R.drawable.ic_launcher_background, main_IMG_menu);
-        imageLoader.load(R.drawable.articles,R.drawable.articles_temp, main_BTN_articles);
-        imageLoader.load(R.drawable.games,R.drawable.games_temp, main_BTN_games);
-        imageLoader.load(R.drawable.podcasts,R.drawable.podcast_temp, main_BTN_podcasts);
     }
 
     private void findViews() {
@@ -50,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         main_IMG_logo = findViewById(R.id.main_IMG_logo);
         main_BTN_games = findViewById(R.id.main_BTN_games);
         main_BTN_articles = findViewById(R.id.main_BTN_articles);
+        main_BTN_news = findViewById(R.id.main_BTN_news);
         main_BTN_podcasts = findViewById(R.id.main_BTN_podcasts);
     }
 }
