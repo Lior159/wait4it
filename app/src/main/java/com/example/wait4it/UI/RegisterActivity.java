@@ -45,18 +45,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (username.isEmpty()) {
             Toast.makeText(this, "Please enter username", Toast.LENGTH_LONG).show();
-            return;
         }
-//        else if (password.isEmpty()) {
-//            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//        else if(!PatternsCompat.EMAIL_ADDRESS.matcher(email).matches()){
-//            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_LONG).show();
-//            return;
-//        }
+        else if (password.isEmpty()) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
+        }
+        else if(!PatternsCompat.EMAIL_ADDRESS.matcher(email).matches()){
+            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_LONG).show();
+        }
         else{
-            HttpUtil.postUser(email, password, username, new HttpCallback() {
+            HttpUtil.signup(email, password, username, new HttpCallback() {
                 @Override
                 public void onSuccess(Response response) {
                     runOnUiThread(() -> {

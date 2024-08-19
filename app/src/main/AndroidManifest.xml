@@ -16,10 +16,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Webview.NewsMainPage"
+            android:exported="false" />
+        <activity
             android:name=".Games.GuessTheCounty.UI.GuessTheCountryActivity"
             android:exported="false" />
         <activity
-            android:name=".Podcasts.UI.PodcastsMainPage"
+            android:name=".Webview.PodcastsMainPage"
             android:exported="false" />
         <activity
             android:name=".Games.UI.GamesMainPage"
@@ -32,13 +35,9 @@
             android:exported="false" />
         <activity
             android:name=".UI.RegisterActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".UI.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UI.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +45,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UI.MainActivity"
+            android:exported="false"></activity>
     </application>
 
 </manifest>

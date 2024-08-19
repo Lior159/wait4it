@@ -6,8 +6,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wait4it.Games.UI.GamesMainPage;
-import com.example.wait4it.Model.User;
-import com.example.wait4it.Podcasts.UI.PodcastsMainPage;
+import com.example.wait4it.Webview.NewsMainPage;
+import com.example.wait4it.Webview.PodcastsMainPage;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.ImageLoader;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         });
         main_BTN_podcasts.setOnClickListener(v->{
             Intent intent = new Intent(this, PodcastsMainPage.class);
+            startActivity(intent);
+        });
+        main_BTN_news.setOnClickListener(v->{
+            Intent intent = new Intent(this, NewsMainPage.class);
             startActivity(intent);
         });
     }

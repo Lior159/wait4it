@@ -5,10 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Webview.PodcastsMainPage">
+    tools:context=".Webview.NewsMainPage">
 
     <WebView
-        android:id="@+id/podcasts_WEBVIEW_webView"
+        android:id="@+id/news_WEBVIEW_webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

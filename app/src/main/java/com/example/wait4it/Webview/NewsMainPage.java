@@ -1,4 +1,4 @@
-package com.example.wait4it.Podcasts.UI;
+package com.example.wait4it.Webview;
 
 import android.os.Bundle;
 import android.webkit.WebResourceRequest;
@@ -13,14 +13,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.wait4it.R;
 
-public class PodcastsMainPage extends AppCompatActivity {
+public class NewsMainPage extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_podcasts_main_page);
+        setContentView(R.layout.activity_news_main_page);
 
-        WebView myWebView = (WebView) findViewById(R.id.podcasts_WEBVIEW_webView);
+        WebView myWebView = (WebView) findViewById(R.id.news_WEBVIEW_webView);
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request){
