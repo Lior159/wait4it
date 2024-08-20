@@ -19,6 +19,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Response;
@@ -27,7 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private TextInputEditText register_ET_email;
     private TextInputEditText register_ET_password;
-    private TextInputEditText register_ET_username;;
+    private TextInputEditText register_ET_username;
+    ;
     private MaterialButton register_BTN_register;
 
     @Override
@@ -35,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         findViews();
-        register_BTN_register.setOnClickListener(v->registerNewUser());
+        register_BTN_register.setOnClickListener(v -> registerNewUser());
     }
 
     private void registerNewUser() {
@@ -43,25 +47,40 @@ public class RegisterActivity extends AppCompatActivity {
         String email = register_ET_email.getText().toString().trim();
         String password = register_ET_password.getText().toString().trim();
 
+        Log.d("Register", "Username: " + username + ", Email: " + email + ", Password: " + password);
+
         if (username.isEmpty()) {
             Toast.makeText(this, "Please enter username", Toast.LENGTH_LONG).show();
-        }
-        else if (password.isEmpty()) {
+        } else if (password.isEmpty()) {
             Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
-        }
-        else if(!PatternsCompat.EMAIL_ADDRESS.matcher(email).matches()){
+        } else if (!PatternsCompat.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_LONG).show();
-        }
-        else{
-            HttpUtil.signup(email, password, username, new HttpCallback() {
+        } else {
+            HttpUtil.signup(email, username, password, new HttpCallback() {
                 @Override
                 public void onSuccess(Response response) {
                     runOnUiThread(() -> {
                         try {
-                            assert response.body() != null;
-                            Log.d("HTTP GET Success", "" + response.body().string());
+                            String responseBody = response.body().string();
+
+                            Log.d("HTTP GET Success", "" + responseBody);
+                            JSONObject jsonObject = new JSONObject(responseBody);
+
+                            String status = jsonObject.getString("status");
+                            String message = jsonObject.getString("message");
+                            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+
+                            if (status.equals("success"))
+                                redirectToLogin();
+                            else {
+                                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                            }
+
+                            Log.d("STATUS", status);
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            Log.e("HTTP GET Error", "Request failed", e);
+                        } catch (JSONException e) {
+                            Log.e("HTTP GET Error", "Request failed", e);
                         }
                     });
                 }

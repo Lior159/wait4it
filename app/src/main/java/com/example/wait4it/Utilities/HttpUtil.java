@@ -48,7 +48,7 @@ public class HttpUtil {
     public static void signup(String email, String username, String password, HttpCallback callback) {
         String url = "http://192.168.7.7:8000/signup";
         RequestBody requestBody = new FormBody.Builder()
-                .add("userName", username)
+                .add("username", username)
                 .add("email", email)
                 .add("password", password)
                 .build();
@@ -74,8 +74,33 @@ public class HttpUtil {
     public static void login(String userName, String password, HttpCallback callback) {
         String url = "http://192.168.7.7:8000/login";
         RequestBody requestBody = new FormBody.Builder()
-                .add("userName", userName)
+                .add("username", userName)
                 .add("password", password)
+                .build();
+
+        Request request = new Request.Builder().url(url).post(requestBody).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                if (callback != null) {
+                    callback.onFailure(e);
+                }
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (callback != null && response.body() != null) {
+                    callback.onSuccess(response);
+                }
+            }
+        });
+    }
+
+    public static void validateToken(String userName, String jwtToken, HttpCallback callback) {
+        String url = "http://192.168.7.7:8000/validate";
+        RequestBody requestBody = new FormBody.Builder()
+                .add("username", userName)
+                .add("jwtToken", jwtToken)
                 .build();
 
         Request request = new Request.Builder().url(url).post(requestBody).build();
