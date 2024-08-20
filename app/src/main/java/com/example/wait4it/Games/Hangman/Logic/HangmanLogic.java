@@ -43,7 +43,7 @@ public class HangmanLogic {
 
     public boolean checkLetter(String temp) {
         char letter = temp.toLowerCase().charAt(0);
-        for (char c: secretWord.getWordAsString().toCharArray()){
+        for (char c: secretWord.getWordAsString().toLowerCase().toCharArray()){
             if(c == letter)
                 return true;
         }
