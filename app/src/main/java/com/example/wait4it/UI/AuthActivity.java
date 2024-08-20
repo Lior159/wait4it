@@ -30,42 +30,53 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-        validateToken(getUsername(this), getJwtToken(this), new HttpCallback() {
-            @Override
-            public void onSuccess(Response response) {
-                runOnUiThread(() -> {
-                    try {
-                        String responseBody = null;
-                        responseBody = response.body().string();
-                        Log.d("HTTP GET Success", "" + responseBody);
-                        JSONObject jsonObject = new JSONObject(responseBody);
+        String token = getJwtToken(this);
+        String username = getUsername(this);
 
-                        String status = jsonObject.getString("status");
-                        String message = jsonObject.getString("message");
+        Log.d("AuthActivity", "Token: " + token);
+        Log.d("AuthActivity", "Username: " + username);
 
-                        Log.d("STATUS", status);
-                        Log.d("MESSAGE", message);
+        if (token != null && username != null) {
+            validateToken(username, token, new HttpCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    runOnUiThread(() -> {
+                        try {
+                            String responseBody = null;
+                            if (response.body() != null) {
+                                responseBody = response.body().string();
+                            }
+                            JSONObject jsonObject = new JSONObject(responseBody);
 
-                        if (status.equals("success")) {
-                            redirectToMainMenu();
+                            String status = jsonObject.getString("status");
+
+                            if (status.equals("success")) {
+                                redirectToMainMenu();
+                            }
+                            else {
+                                redirectToLogin();
+                            }
+                        } catch (IOException | JSONException e) {
+                            Log.e("HTTP GET Error", "Request failed", e);
                         }
-                        else {
-                            redirectToLogin();
-                        }
-                    } catch (IOException | JSONException e) {
+                    });
+                }
+
+                @Override
+                public void onFailure(IOException e) {
+                    runOnUiThread(() -> {
+                        // Handle error
                         Log.e("HTTP GET Error", "Request failed", e);
-                    }
-                });
-            }
+                    });
+                }
+            });
+        }
+        else {
+            redirectToLogin();
+        }
 
-            @Override
-            public void onFailure(IOException e) {
-                runOnUiThread(() -> {
-                    // Handle error
-                    Log.e("HTTP GET Error", "Request failed", e);
-                });
-            }
-        });
+
+
     }
 
     private void redirectToMainMenu() {

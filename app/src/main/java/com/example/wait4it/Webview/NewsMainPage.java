@@ -24,14 +24,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NewsMainPage extends AppCompatActivity {
-    private WebView webView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_main_page);
 
-        webView = (WebView) findViewById(R.id.news_WEBVIEW_webView);
+        WebView webView = (WebView) findViewById(R.id.news_WEBVIEW_webView);
         String jwtToken = AuthUtil.getJwtToken(NewsMainPage.this);
         String username = AuthUtil.getUsername(NewsMainPage.this);
 

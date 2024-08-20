@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.wait4it.R;
+import com.example.wait4it.Utilities.AuthUtil;
 
 public class PodcastsMainPage extends AppCompatActivity {
 
@@ -20,9 +21,15 @@ public class PodcastsMainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_podcasts_main_page);
 
-        WebView myWebView = (WebView) findViewById(R.id.podcasts_WEBVIEW_webView);
-        myWebView.getSettings().setJavaScriptEnabled(true);
-        myWebView.setWebViewClient(new WebViewClient() {
+        WebView webView = (WebView) findViewById(R.id.podcasts_WEBVIEW_webView);
+
+        String jwtToken = AuthUtil.getJwtToken(PodcastsMainPage.this);
+        String username = AuthUtil.getUsername(PodcastsMainPage.this);
+
+        webView.getSettings().setJavaScriptEnabled(true);
+
+
+        webView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request){
                 // do your handling codes here, which url is the requested url
                 // probably you need to open that url rather than redirect:
@@ -31,6 +38,8 @@ public class PodcastsMainPage extends AppCompatActivity {
             }
         });
 
-        myWebView.loadUrl("http://192.168.7.7:8000/podcasts");
+
+        String url = String.format("http://192.168.7.7:8000/podcasts?username=%s&token=%s", username, jwtToken);
+        webView.loadUrl(url);
     }
 }
