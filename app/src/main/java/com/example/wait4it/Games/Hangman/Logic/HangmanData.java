@@ -21,11 +21,11 @@ public class HangmanData {
     }
     private void setWords(String category)
     {
-        words = null;
-        setWordsBooks();
+        if(category.equals("Books"))
+            setWordsBooks();
     }
 
-    private void setWordsBooks() {
+    /*private void setWordsBooks() {
         words.add(new Word("Thus Spoke Zarathustra - Friedrich Nietzsche"));
         words.add(new Word("Crime and Punishment - Fyodor Dostoevsky"));
         words.add(new Word("Ulysses - James Joyce"));
@@ -41,6 +41,20 @@ public class HangmanData {
         words.add(new Word("Don Quixote - Miguel de Cervantes"));
         words.add(new Word("Anna Karenina - Leo Tolstoy"));
         words.add(new Word("Finnegans Wake - James Joyce"));
+    }*/
+    private void setWordsBooks() {
+        words.add(new Word("Ulysses - James Joyce"));
+        words.add(new Word("The Trial - Franz Kafka"));
+
+
+
+
+
+
+
+
+
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.wait4it.Games.Hangman.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,6 +40,7 @@ public class HangmanActivity extends AppCompatActivity {
     private Word currentWord;
     private boolean isCorrect = false;
     private HangmanLogic hangmanLogic;
+    private String category = "";
 
 
     @Override
@@ -46,17 +48,23 @@ public class HangmanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hangman);
         findViews();
+        Intent intent = getIntent();
+        category = intent.getStringExtra("CATEGORY");
         initViews();
         setupGame();
         loadImage();
-        handleKeyboard();
 
 
     }
 
     private void setupGame() {
-        currentWord = hangmanLogic.getRandomWord();
-        letterCount = hangmanLogic.getAmountOfLetters();
+        currentWord = hangmanLogic.getRandomWord().setDoneAlready();
+        hangmanLogic.incrementQuestionIndex();
+        hangmanLogic.initLetterCount();
+        hangmanLogic.initWrongAnswers();
+        loadImage();
+        clearKeyBoard();
+        handleKeyboard();
         if (currentWord != null)
             Log.d("Current", "CurrentWord: " + currentWord + ", As String: " + currentWord.getWordAsString() + ", done? " + currentWord.isDoneAlready());
         else
@@ -126,19 +134,31 @@ public class HangmanActivity extends AppCompatActivity {
         materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_wrong));
         hangmanLogic.incrementWrongAnswers();
         //loadImage();
+        Log.d("Word wrong", "LIFE = " + hangmanLogic.getLIFE() + ", wrong answers = " + hangmanLogic.getWrongAnswers());
         if(hangmanLogic.isGameLost()){
             finishGame("Lost");
-            return;
         }
-        if(hangmanLogic.isGameEnded("Books")){
-            finishGame("Won");
-        }
-        else
+        loadImage();
+    }
+
+    private void correctProcedure(MaterialButton materialButton) {
+        materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green_right));
+        fillCorrectLetterInWordViews(materialButton.getText().toString());
+        Log.d("words", "amount = " + hangmanLogic.getAmountOfLetters() + " , count = " + hangmanLogic.getLetterCount());
+        if(hangmanLogic.wordIsDone())
         {
-            new Handler(Looper.getMainLooper()).postDelayed(()->{
-                setupGame();
-            },500);
+
+            if(hangmanLogic.isGameEnded()){
+                finishGame("Won");
+            }
+            else{
+                new Handler(Looper.getMainLooper()).postDelayed(()->{
+                    setupGame();
+                },500);
+            }
         }
+
+
     }
 
     private void finishGame(String result) {
@@ -149,7 +169,14 @@ public class HangmanActivity extends AppCompatActivity {
     }
 
     private void showLoseGameDialog() {
-        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Game Over");
+        builder.setMessage(String.format("You lost the game after %d questions", hangmanLogic.getQuestionIndex()-1));
+        builder.setPositiveButton("OK", (dialog, id) -> {
+            navigateToGameMenu();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void showWinGameDialog(int minutes, int seconds) {
@@ -168,15 +195,11 @@ public class HangmanActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
     private void navigateToGameMenu() {
-    }
-
-
-    //
-    private void correctProcedure(MaterialButton materialButton) {
-        materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green_right));
-        fillCorrectLetterInWordViews(materialButton.getText().toString());
+        Intent intent = new Intent(this, Hangman_Menu.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void fillCorrectLetterInWordViews(String letterAsString) {
@@ -288,9 +311,36 @@ public class HangmanActivity extends AppCompatActivity {
 
     private void initViews() {
         imageLoader = new ImageLoader(this);
-        hangmanLogic = new HangmanLogic();
+        hangmanLogic = new HangmanLogic(category);
         hangman_LLC_underscores.setOrientation(LinearLayout.VERTICAL);
     }
+    private void clearKeyBoard() {
+        for (MaterialButton button : hangman_BTN_firstRowAtoG) {
+            if (button != null) {
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.blue_400));
+                button.setClickable(true);
+            }
+        }
+        for (MaterialButton button : hangman_BTN_secondRowHtoM) {
+            if (button != null) {
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.blue_400));
+                button.setClickable(true);
+            }
+        }
+        for (MaterialButton button : hangman_BTN_thirdRowNtoT) {
+            if (button != null) {
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.blue_400));
+                button.setClickable(true);
+            }
+        }
+        for (MaterialButton button : hangman_BTN_fourthRowUtoZ) {
+            if (button != null) {
+                button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.blue_400));
+                button.setClickable(true);
+            }
+        }
+    }
+
 
     private void findViews() {
         hangman_LBL_title = findViewById(R.id.hangman_LBL_title);
@@ -309,8 +359,6 @@ public class HangmanActivity extends AppCompatActivity {
             } else {
                 hangman_BTN_fourthRowUtoZ[index - INDEX_CORRECTOR_FOURTH_ROW] = findViewById((getResources().getIdentifier(template, "id", getPackageName())));
             }
-            //20
-
         }
     }
 }

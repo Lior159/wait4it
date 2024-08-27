@@ -3,8 +3,8 @@ package com.example.wait4it.Games.Hangman.Logic;
 
 import com.example.wait4it.Games.Hangman.Model.Word;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HangmanLogic {
     private static final int ANSWER_POINTS = 10;
@@ -14,17 +14,20 @@ public class HangmanLogic {
     private int wrongAnswers;
     private HangmanData data;
     private Word secretWord;
-    private Set<Character> uniqueLetters;
+    private Map<Character,Integer> uniqueLetters;
     private int amountOfLetters;
+    private int letterCount;
 
 
-    public HangmanLogic()
+    public HangmanLogic(String category)
     {
-        data = new HangmanData("Books");
+        data = new HangmanData(category);
         this.score = 0;
         this.questionIndex = 0;
         this.wrongAnswers = 0;
-        this.uniqueLetters = new HashSet<>();
+        this.amountOfLetters = 0;
+        this.letterCount=0;
+        this.uniqueLetters = new HashMap<>();
     }
 
     public int getScore() {
@@ -34,9 +37,23 @@ public class HangmanLogic {
     public int getQuestionIndex() {
         return questionIndex;
     }
+    public void incrementQuestionIndex(){
+        this.questionIndex++;
+    }
 
     public int getWrongAnswers() {
         return wrongAnswers;
+    }
+
+    public void setAmountOfLetters() {
+        uniqueLetters = new HashMap<>();
+        for(char c: secretWord.getWordAsString().toCharArray()){
+            if(Character.isLetter(c)){
+                char lowerCaseChar = Character.toLowerCase(c);
+                uniqueLetters.put(lowerCaseChar,uniqueLetters.getOrDefault(lowerCaseChar,0) + 1);
+            }
+        }
+        amountOfLetters= uniqueLetters.size();
     }
 
     public Word getSecretWord() {
@@ -44,25 +61,23 @@ public class HangmanLogic {
     }
     public Word getRandomWord(){
         secretWord = this.data.getRandomWord();
+        setAmountOfLetters();
         return secretWord;
+    }
+    public int getLetterCount() {
+        return letterCount;
     }
 
     public int getAmountOfLetters(){
-        Set<Character> uniqueLetters = new HashSet<>();
-        for(char c: secretWord.getWordAsString().toCharArray()){
-            if(Character.isLetter(c))
-                uniqueLetters.add(Character.toLowerCase(c));
-        }
-        return uniqueLetters.size();
+        return this.amountOfLetters;
     }
 
-    public boolean checkLetter(String temp) {
-        char letter = temp.toLowerCase().charAt(0);
-        for (char c: secretWord.getWordAsString().toLowerCase().toCharArray()){
-            if(c == letter){
-                uniqueLetters.add(c);
-                return true;
-            }
+    public boolean checkLetter(String letterAsString) {
+        char letter = letterAsString.toLowerCase().charAt(0);
+        if(uniqueLetters.containsKey(letter))
+        {
+            letterCount++;
+            return true;
         }
         return false;
     }
@@ -71,13 +86,29 @@ public class HangmanLogic {
         this.wrongAnswers++;
     }
 
+    public void initLetterCount(){
+        this.letterCount = 0;
+    }
 
     public boolean isGameLost() {
         return getWrongAnswers() == LIFE;
     }
 
-    public boolean isGameEnded(String category) {
-        //return getQuestionIndex() == data.
-        return false;
+    public boolean isGameEnded() {
+        return questionIndex == data.getWords().size();
+    }
+
+
+    public int getLIFE(){
+        return LIFE;
+    }
+
+
+    public boolean wordIsDone() {
+        return this.getLetterCount() == this.getAmountOfLetters();
+    }
+
+    public void initWrongAnswers() {
+        this.wrongAnswers = 0;
     }
 }
