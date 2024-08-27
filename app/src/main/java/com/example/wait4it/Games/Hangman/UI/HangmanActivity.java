@@ -1,11 +1,13 @@
 package com.example.wait4it.Games.Hangman.UI;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -24,6 +26,8 @@ public class HangmanActivity extends AppCompatActivity {
     private final int INDEX_CORRECTOR_SECOND_ROW = 7;
     private final int INDEX_CORRECTOR_THIRD_ROW = 13;
     private final int INDEX_CORRECTOR_FOURTH_ROW = 20;
+    private int seconds;
+    private int minutes;
     private ShapeableImageView hangman_IMG_level;
     private MaterialButton[] hangman_BTN_firstRowAtoG = new MaterialButton[7];
     private MaterialButton[] hangman_BTN_secondRowHtoM = new MaterialButton[6];
@@ -43,9 +47,6 @@ public class HangmanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hangman);
         findViews();
         initViews();
-        /*String word = "Liverpool";
-        String word2 = "Manchester United";
-        setupWordViews(word2);*/
         setupGame();
         loadImage();
         handleKeyboard();
@@ -55,6 +56,7 @@ public class HangmanActivity extends AppCompatActivity {
 
     private void setupGame() {
         currentWord = hangmanLogic.getRandomWord();
+        letterCount = hangmanLogic.getAmountOfLetters();
         if (currentWord != null)
             Log.d("Current", "CurrentWord: " + currentWord + ", As String: " + currentWord.getWordAsString() + ", done? " + currentWord.isDoneAlready());
         else
@@ -123,7 +125,51 @@ public class HangmanActivity extends AppCompatActivity {
     private void wrongProcedure(MaterialButton materialButton) {
         materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red_wrong));
         hangmanLogic.incrementWrongAnswers();
-        loadImage();
+        //loadImage();
+        if(hangmanLogic.isGameLost()){
+            finishGame("Lost");
+            return;
+        }
+        if(hangmanLogic.isGameEnded("Books")){
+            finishGame("Won");
+        }
+        else
+        {
+            new Handler(Looper.getMainLooper()).postDelayed(()->{
+                setupGame();
+            },500);
+        }
+    }
+
+    private void finishGame(String result) {
+        if(result.equals("Won"))
+            showWinGameDialog(minutes,seconds);
+        else
+            showLoseGameDialog();
+    }
+
+    private void showLoseGameDialog() {
+        
+    }
+
+    private void showWinGameDialog(int minutes, int seconds) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String timeMessage;
+        if(minutes > 0)
+            timeMessage = String.format("You won the game in %d minutes and %d seconds!", minutes,seconds);
+        else
+            timeMessage = String.format("You won the game in %d seconds!",seconds);
+
+        builder.setTitle("Congratulations!");
+        builder.setMessage(timeMessage);
+        builder.setPositiveButton("OK", (dialog, id) -> {
+            navigateToGameMenu();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void navigateToGameMenu() {
     }
 
 
@@ -136,10 +182,6 @@ public class HangmanActivity extends AppCompatActivity {
     private void fillCorrectLetterInWordViews(String letterAsString) {
         char letter = letterAsString.toLowerCase().charAt(0);
         for (int i = 0; i < currentWord.getWordAsString().length(); i++) {
-            // Skip if the current entry is null (i.e., a space or a separator)
-            if (letterViews[i] == null) continue;
-
-            // Check if the character in the word matches the guessed letter
             if (Character.toLowerCase(currentWord.getWordAsString().charAt(i)) == letter) {
                 letterViews[i].setText(String.valueOf(currentWord.getWordAsString().charAt(i)));
             }
@@ -153,122 +195,84 @@ public class HangmanActivity extends AppCompatActivity {
     //repeat
     // for sentence is sentences (sentence - LLC in LLC[]
 
-
     private void setupWordViews(String sentence) {
         hangman_LLC_underscores.removeAllViews();
+        Log.d("Sentence words", sentence);
 
-        String[] Words = sentence.split(" ");
+        // Split the sentence into words including spaces
+        String[] words = sentence.split("(?<=\\s)|(?=\\s)");
+        Log.d("Before trim words: ", Arrays.toString(words));
 
-        String[] lines = new String[4];
+        String[] lines = new String[10];
         int maxLetters = 25;
         int currentLine = 0;
 
-        Log.d("Words: ", Arrays.toString(Words));
-        for (String currentWord : Words) {
+        for (String currentWord : words) {
             if (currentWord.equals("-")) {
-                lines[++currentLine] = " " + currentWord + " ";
+                lines[++currentLine] = currentWord;
                 currentLine++;
                 continue;
             }
-            if (lines[currentLine] == null || lines[currentLine].isEmpty())
+            if (lines[currentLine] == null || lines[currentLine].isEmpty()) {
+                //lines[currentLine] = currentWord.trim();
                 lines[currentLine] = currentWord;
-            else if (lines[currentLine].length() + currentWord.length() + 1 <= maxLetters)
-                lines[currentLine] += " " + currentWord;
-            else
+            } else if (lines[currentLine].length() + currentWord.length() < maxLetters) {
+                //lines[currentLine] += " " + currentWord.trim();
+                lines[currentLine] += currentWord;
+            } else {
+                //lines[++currentLine] = currentWord.trim();
                 lines[++currentLine] = currentWord;
+            }
         }
         Log.d("Lines:", "line 0: " + lines[0] + "\nline 1: " + lines[1] + "\nline 2: " + lines[2]);
 
+        // Calculate the total required size for letterViews
+        int totalCharacters = 0;
+        for (String line : lines) {
+            if (line != null) {
+                totalCharacters += line.length();
+            }
+        }
+        Log.d("Length", ""+totalCharacters);
+
+        letterViews = new MaterialTextView[totalCharacters]; // Correctly sized array
         int i = 0;
 
-        letterViews = new MaterialTextView[sentence.length()];
         for (String line : lines) {
             if (line != null) {
                 Log.d("generate LLC", "line: " + line);
 
-                // Initialize the letterViews array
-
-
-                // Calculate the available width
-                int availableWidth = hangman_LLC_underscores.getWidth();
-                int usedWidth = 0;
                 LinearLayout currentLineLinear = createNewLine();
-
 
                 for (char letter : line.toCharArray()) {
                     MaterialTextView materialTextView = new MaterialTextView(this);
 
                     if (letter == ' ') {
                         materialTextView.setText(" ");
-                        materialTextView.setWidth(20); // Set a fixed width for spaces
+                        materialTextView.setWidth(15); // Set a fixed width for spaces
                     } else if (letter == '-') {
                         materialTextView.setText("by");
                     } else {
                         materialTextView.setText("_");
                     }
 
-                    materialTextView.setTextSize(30);
+                    materialTextView.setTextSize(20);
                     materialTextView.setGravity(Gravity.CENTER);
-//            materialTextView.setPadding(4, 0, 4, 0);
-//            materialTextView.measure(0, 0);
 
-                    int charWidth = materialTextView.getMeasuredWidth();
-
-                    // Check if the character fits in the current line
-                    if (usedWidth + charWidth > availableWidth) {
-                        // Add the current line to the layout and start a new line
-                        hangman_LLC_underscores.addView(currentLineLinear);
-                        currentLineLinear = createNewLine();
-                        usedWidth = 0;
-                    }
-
-                    // Add the character to the current line
                     currentLineLinear.addView(materialTextView, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                    usedWidth += charWidth;
 
-                    // Store the reference in the letterViews array
-                    letterViews[i++] = materialTextView;
+                    // Store the reference in the letterViews array, but only if within bounds
+                    if (i < letterViews.length) {
+                        letterViews[i++] = materialTextView;
+                    }
                 }
 
-                // Add the last line to the layout
                 hangman_LLC_underscores.addView(currentLineLinear);
             }
         }
     }
 
 
-    private void addSpaceToLine(LinearLayout line) {
-        MaterialTextView spaceView = new MaterialTextView(this);
-        spaceView.setText(" ");
-        spaceView.setWidth(20); // Fixed width for space
-        line.addView(spaceView);
-    }
-
-    private void addSegmentToLine(LinearLayout line, String segment) {
-        for (int i = 0; i < segment.length(); i++) {
-            MaterialTextView materialTextView = new MaterialTextView(this);
-            materialTextView.setText("_");
-            materialTextView.setTextSize(30);
-            materialTextView.setGravity(Gravity.CENTER);
-            materialTextView.setPadding(4, 0, 4, 0);
-            line.addView(materialTextView);
-        }
-    }
-
-    private boolean doesSegmentFit(LinearLayout line, int segmentWidth) {
-        int usedWidth = 0;
-        for (int i = 0; i < line.getChildCount(); i++) {
-            View child = line.getChildAt(i);
-            usedWidth += child.getWidth();
-        }
-        return (usedWidth + segmentWidth) <= line.getWidth();
-    }
-
-    private int calculateSegmentWidth(String segment) {
-        // Estimate the width based on the number of characters and the text size
-        // This is a rough estimate; you might need to refine it based on your font
-        return segment.length() * 50; // Example: 50 pixels per character
-    }
 
     private LinearLayout createNewLine() {
         LinearLayout line = new LinearLayout(this);
@@ -294,22 +298,16 @@ public class HangmanActivity extends AppCompatActivity {
         hangman_LLC_underscores = findViewById(R.id.hangman_LLC_underscores);
         for (int i = 'A'; i <= 'Z'; i++) {
             String template = String.format("hangman_BTN_%c", i);
-            Log.d("Template", "Template = " + template);
             int index = i - 'A';
             if (i >= 'A' && i <= 'G') {
-                Log.d("First Row", "i = " + i + ", (char)i = " + (char) i + ", index = " + index);
                 hangman_BTN_firstRowAtoG[index] = findViewById(getResources().getIdentifier(template, "id", getPackageName()));
-                //hangman_BTN_firstRowAtoI[index].setText(String.valueOf((char)i));
-                //Log.d("First id", "hangman_BTN_firstRowAtoI[" + index + "] = " + hangman_BTN_firstRowAtoI[index].getResources().getResourceEntryName(hangman_BTN_firstRowAtoI[index].getId()));
-                //Log.d("First text", "hangman_BTN_firstRowAtoI[" + index + "].getText = "+ hangman_BTN_firstRowAtoI[index].getText());
-            } else if (i >= 'H' && i <= 'M') {
-                //Log.d("Second Row","i = " + i +", (char)i = " + (char)i + ", index = " + (index-9));
-                hangman_BTN_secondRowHtoM[index - 7] = findViewById(getResources().getIdentifier(template, "id", getPackageName()));
+            }
+            else if (i >= 'H' && i <= 'M') {
+                hangman_BTN_secondRowHtoM[index - INDEX_CORRECTOR_SECOND_ROW] = findViewById(getResources().getIdentifier(template, "id", getPackageName()));
             } else if (i >= 'N' && i <= 'T') {
-                //Log.d("Third Row","i = " + i +", (char)i = " + (char)i + ", index = " + (index-17));
-                hangman_BTN_thirdRowNtoT[index - 13] = findViewById(getResources().getIdentifier(template, "id", getPackageName()));
+                hangman_BTN_thirdRowNtoT[index - INDEX_CORRECTOR_THIRD_ROW] = findViewById(getResources().getIdentifier(template, "id", getPackageName()));
             } else {
-                hangman_BTN_fourthRowUtoZ[index - 20] = findViewById((getResources().getIdentifier(template, "id", getPackageName())));
+                hangman_BTN_fourthRowUtoZ[index - INDEX_CORRECTOR_FOURTH_ROW] = findViewById((getResources().getIdentifier(template, "id", getPackageName())));
             }
             //20
 

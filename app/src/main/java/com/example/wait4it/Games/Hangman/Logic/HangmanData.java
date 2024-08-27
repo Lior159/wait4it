@@ -13,18 +13,23 @@ public class HangmanData {
     private HashSet<Word> doneWords;
     private Random rnd;
 
-    public HangmanData(){
+    public HangmanData(String category){
         this.words = new ArrayList<>();
         this.doneWords = new HashSet<>();
-        setWords();
+        setWords(category);
         rnd = new Random();
     }
+    private void setWords(String category)
+    {
+        words = null;
+        setWordsBooks();
+    }
 
-    /*private void setWords() {
+    private void setWordsBooks() {
         words.add(new Word("Thus Spoke Zarathustra - Friedrich Nietzsche"));
         words.add(new Word("Crime and Punishment - Fyodor Dostoevsky"));
         words.add(new Word("Ulysses - James Joyce"));
-        words.add(new Word("One Hundred Years of Solitude - Gabriel García Marquez"));
+        words.add(new Word("One Hundred Years of Solitude - Gabriel Garcia Marquez"));
         words.add(new Word("The Trial - Franz Kafka"));
         words.add(new Word("In Search of Lost Time - Marcel Proust"));
         words.add(new Word("The Brothers Karamazov - Fyodor Dostoevsky"));
@@ -36,10 +41,8 @@ public class HangmanData {
         words.add(new Word("Don Quixote - Miguel de Cervantes"));
         words.add(new Word("Anna Karenina - Leo Tolstoy"));
         words.add(new Word("Finnegans Wake - James Joyce"));
-    }*/
-    private void setWords() {
-        words.add(new Word("Don Quixote - Miguel de Cervantes"));
     }
+
 
     public Word getRandomWord(){
         List<Word> availableWords = words.stream()

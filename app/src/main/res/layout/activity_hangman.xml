@@ -21,7 +21,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/hangman_IMG_level"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@id/hangman_LLC_underscores"
         android:layout_below="@id/hangman_LBL_title"
         android:layout_centerHorizontal="true"

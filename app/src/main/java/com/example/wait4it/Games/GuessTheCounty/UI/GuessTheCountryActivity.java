@@ -91,8 +91,6 @@ public class GuessTheCountryActivity extends AppCompatActivity {
         int clickedIndex = Arrays.asList(guessTheCountry_BTN_options).indexOf(clickedButton);
         boolean isCorrect = clickedIndex == guessTheCountryLogic.getCorrectAnswer();
 
-       /* guessTheCountry_BTN_options[guessTheCountryLogic.getCorrectAnswer()]
-                .setBackgroundColor(ContextCompat.getColor(this, R.color.green_right));*/
         if(isCorrect)
         {
             clickedButton.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.green_right));
@@ -108,10 +106,8 @@ public class GuessTheCountryActivity extends AppCompatActivity {
         },500);
         if(isCorrect){
             guessTheCountryLogic.incrementScore();
-            //Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
         }
         else{
-            //clickedButton.setBackgroundColor(ContextCompat.getColor(this,R.color.red_wrong));
             guessTheCountry_IMG_hearts[guessTheCountryLogic.getWrongAnswers()].setVisibility(View.INVISIBLE);
             guessTheCountryLogic.incrementWrongAnswers();
             if(guessTheCountryLogic.isGameLost()){
