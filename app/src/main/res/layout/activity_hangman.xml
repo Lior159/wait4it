@@ -18,17 +18,42 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/hangman_LBL_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hangman_LBL_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Score: 0"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/hangman_LBL_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hangman_LBL_score"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="00:00"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/hangman_IMG_level"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/hangman_LLC_underscores"
-        android:layout_below="@id/hangman_LBL_title"
+        android:layout_below="@id/hangman_LBL_timer"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_launcher_background" />
 

@@ -111,4 +111,8 @@ public class HangmanLogic {
     public void initWrongAnswers() {
         this.wrongAnswers = 0;
     }
+
+    public void incrementScore() {
+        this.score+=ANSWER_POINTS;
+    }
 }

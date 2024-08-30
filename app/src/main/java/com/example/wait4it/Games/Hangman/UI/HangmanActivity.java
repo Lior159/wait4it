@@ -20,15 +20,15 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.Arrays;
-
 public class HangmanActivity extends AppCompatActivity {
     private MaterialTextView hangman_LBL_title;
+    private MaterialTextView hangman_LBL_score;
+    private MaterialTextView hangman_LBL_timer;
     private final int INDEX_CORRECTOR_SECOND_ROW = 7;
     private final int INDEX_CORRECTOR_THIRD_ROW = 13;
     private final int INDEX_CORRECTOR_FOURTH_ROW = 20;
-    private int seconds;
-    private int minutes;
+    private int seconds=0;
+    private int minutes=0;
     private ShapeableImageView hangman_IMG_level;
     private MaterialButton[] hangman_BTN_firstRowAtoG = new MaterialButton[7];
     private MaterialButton[] hangman_BTN_secondRowHtoM = new MaterialButton[6];
@@ -42,6 +42,10 @@ public class HangmanActivity extends AppCompatActivity {
     private HangmanLogic hangmanLogic;
     private String category = "";
 
+    private Handler timerHandler = new Handler();
+    private Runnable timerRunnable;
+    private long startTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,8 @@ public class HangmanActivity extends AppCompatActivity {
         findViews();
         Intent intent = getIntent();
         category = intent.getStringExtra("CATEGORY");
+        hangman_LBL_title.setText("Hangman - Category: " + category);
+        configureTimer();
         initViews();
         setupGame();
         loadImage();
@@ -57,7 +63,37 @@ public class HangmanActivity extends AppCompatActivity {
 
     }
 
+    private void configureTimer() {
+        startTime = System.currentTimeMillis();
+        timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                long millis = System.currentTimeMillis() - startTime;
+                seconds = (int) (millis / 1000);
+                minutes = seconds / 60;
+                seconds = seconds % 60;
+                hangman_LBL_timer.setText(String.format("%02d:%02d", minutes,seconds));
+                timerHandler.postDelayed(timerRunnable, 0);
+            }
+        };
+    }
+    protected void onPause() {
+        super.onPause();
+        timerHandler.removeCallbacks(timerRunnable);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startTime = System.currentTimeMillis();
+        timerHandler.postDelayed(timerRunnable, 0);
+    }
+    private void stopTimer() {
+        timerHandler.removeCallbacks(timerRunnable);;
+    }
+
     private void setupGame() {
+        hangman_LBL_score.setText(String.format("Score: %d", hangmanLogic.getScore()));
         currentWord = hangmanLogic.getRandomWord().setDoneAlready();
         hangmanLogic.incrementQuestionIndex();
         hangmanLogic.initLetterCount();
@@ -143,11 +179,12 @@ public class HangmanActivity extends AppCompatActivity {
 
     private void correctProcedure(MaterialButton materialButton) {
         materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green_right));
+
         fillCorrectLetterInWordViews(materialButton.getText().toString());
         Log.d("words", "amount = " + hangmanLogic.getAmountOfLetters() + " , count = " + hangmanLogic.getLetterCount());
         if(hangmanLogic.wordIsDone())
         {
-
+            hangmanLogic.incrementScore();
             if(hangmanLogic.isGameEnded()){
                 finishGame("Won");
             }
@@ -162,6 +199,7 @@ public class HangmanActivity extends AppCompatActivity {
     }
 
     private void finishGame(String result) {
+        stopTimer();
         if(result.equals("Won"))
             showWinGameDialog(minutes,seconds);
         else
@@ -211,20 +249,12 @@ public class HangmanActivity extends AppCompatActivity {
         }
     }
 
-
-    //split sentence to words (" -")
-    //concat with " " between each 2 words as long as the output is less than 25 letters
-    //assign as a line
-    //repeat
-    // for sentence is sentences (sentence - LLC in LLC[]
-
     private void setupWordViews(String sentence) {
         hangman_LLC_underscores.removeAllViews();
         Log.d("Sentence words", sentence);
 
         // Split the sentence into words including spaces
         String[] words = sentence.split("(?<=\\s)|(?=\\s)");
-        Log.d("Before trim words: ", Arrays.toString(words));
 
         String[] lines = new String[10];
         int maxLetters = 25;
@@ -237,13 +267,10 @@ public class HangmanActivity extends AppCompatActivity {
                 continue;
             }
             if (lines[currentLine] == null || lines[currentLine].isEmpty()) {
-                //lines[currentLine] = currentWord.trim();
                 lines[currentLine] = currentWord;
             } else if (lines[currentLine].length() + currentWord.length() < maxLetters) {
-                //lines[currentLine] += " " + currentWord.trim();
                 lines[currentLine] += currentWord;
             } else {
-                //lines[++currentLine] = currentWord.trim();
                 lines[++currentLine] = currentWord;
             }
         }
@@ -256,43 +283,54 @@ public class HangmanActivity extends AppCompatActivity {
                 totalCharacters += line.length();
             }
         }
-        Log.d("Length", ""+totalCharacters);
+        Log.d("Length", "" + totalCharacters);
 
         letterViews = new MaterialTextView[totalCharacters]; // Correctly sized array
-        int i = 0;
 
-        for (String line : lines) {
-            if (line != null) {
-                Log.d("generate LLC", "line: " + line);
 
-                LinearLayout currentLineLinear = createNewLine();
+        //
+        hangman_LLC_underscores.post(() -> {
+            int layoutWidth = hangman_LLC_underscores.getWidth();
+            int fixedCharWidth = layoutWidth / maxLetters;
+            int i = 0;
+            //
 
-                for (char letter : line.toCharArray()) {
-                    MaterialTextView materialTextView = new MaterialTextView(this);
 
-                    if (letter == ' ') {
-                        materialTextView.setText(" ");
-                        materialTextView.setWidth(15); // Set a fixed width for spaces
-                    } else if (letter == '-') {
-                        materialTextView.setText("by");
-                    } else {
-                        materialTextView.setText("_");
+            for (String line : lines) {
+                if (line != null) {
+                    Log.d("generate LLC", "line: " + line);
+
+                    LinearLayout currentLineLinear = createNewLine();
+
+                    for (char letter : line.toCharArray()) {
+                        MaterialTextView materialTextView = new MaterialTextView(this);
+
+                        if (letter == ' ') {
+                            materialTextView.setText(" ");
+                            materialTextView.setWidth(fixedCharWidth); // Set a fixed width for spaces
+                        } else if (letter == '-') {
+                            materialTextView.setText("by");
+                            materialTextView.setWidth(fixedCharWidth);
+                        } else {
+                            materialTextView.setText("_");
+                            materialTextView.setWidth(fixedCharWidth);
+                        }
+
+                        materialTextView.setTextSize(20);
+                        materialTextView.setGravity(Gravity.CENTER);
+
+                        currentLineLinear.addView(materialTextView, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+
+                        // Store the reference in the letterViews array, but only if within bounds
+                        if (i < letterViews.length) {
+                            letterViews[i++] = materialTextView;
+                        }
                     }
 
-                    materialTextView.setTextSize(20);
-                    materialTextView.setGravity(Gravity.CENTER);
-
-                    currentLineLinear.addView(materialTextView, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-
-                    // Store the reference in the letterViews array, but only if within bounds
-                    if (i < letterViews.length) {
-                        letterViews[i++] = materialTextView;
-                    }
+                    hangman_LLC_underscores.addView(currentLineLinear);
                 }
-
-                hangman_LLC_underscores.addView(currentLineLinear);
             }
-        }
+        });
     }
 
 
@@ -344,6 +382,8 @@ public class HangmanActivity extends AppCompatActivity {
 
     private void findViews() {
         hangman_LBL_title = findViewById(R.id.hangman_LBL_title);
+        hangman_LBL_score = findViewById(R.id.hangman_LBL_score);
+        hangman_LBL_timer = findViewById(R.id.hangman_LBL_timer);
         hangman_IMG_level = findViewById(R.id.hangman_IMG_level);
         hangman_LLC_underscores = findViewById(R.id.hangman_LLC_underscores);
         for (int i = 'A'; i <= 'Z'; i++) {
