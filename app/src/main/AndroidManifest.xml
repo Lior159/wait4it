@@ -28,6 +28,12 @@
             android:name=".Webview.NewsMainPage"
             android:exported="false" />
         <activity
+            android:name=".Games.Hangman.UI.Hangman_Menu"
+            android:exported="false" />
+        <activity
+            android:name=".Games.Hangman.UI.HangmanActivity"
+            android:exported="false" />
+        <activity
             android:name=".Games.GuessTheCounty.UI.GuessTheCountryActivity"
             android:exported="false" />
         <activity

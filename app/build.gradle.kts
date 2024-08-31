@@ -45,5 +45,5 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.webkit:webkit:1.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

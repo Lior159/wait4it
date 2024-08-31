@@ -70,5 +70,4 @@ public class GuessTheCountryLogic {
     public int getCorrectAnswer(){
         return correctAnswer;
     }
-    //public void checkAnswer(String name)
 }

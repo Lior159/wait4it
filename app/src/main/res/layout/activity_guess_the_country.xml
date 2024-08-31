@@ -82,8 +82,7 @@
         android:textStyle="bold"
         android:textColor="@color/black"/>
 
-
-    <!-- Flag Image -->
+    
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/guessTheCountry_IMG_flag"
         android:layout_width="match_parent"

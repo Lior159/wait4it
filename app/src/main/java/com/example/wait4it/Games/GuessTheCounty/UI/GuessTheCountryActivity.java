@@ -91,8 +91,6 @@ public class GuessTheCountryActivity extends AppCompatActivity {
         int clickedIndex = Arrays.asList(guessTheCountry_BTN_options).indexOf(clickedButton);
         boolean isCorrect = clickedIndex == guessTheCountryLogic.getCorrectAnswer();
 
-       /* guessTheCountry_BTN_options[guessTheCountryLogic.getCorrectAnswer()]
-                .setBackgroundColor(ContextCompat.getColor(this, R.color.green_right));*/
         if(isCorrect)
         {
             clickedButton.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.green_right));
@@ -108,10 +106,8 @@ public class GuessTheCountryActivity extends AppCompatActivity {
         },500);
         if(isCorrect){
             guessTheCountryLogic.incrementScore();
-            //Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
         }
         else{
-            //clickedButton.setBackgroundColor(ContextCompat.getColor(this,R.color.red_wrong));
             guessTheCountry_IMG_hearts[guessTheCountryLogic.getWrongAnswers()].setVisibility(View.INVISIBLE);
             guessTheCountryLogic.incrementWrongAnswers();
             if(guessTheCountryLogic.isGameLost()){
@@ -130,6 +126,25 @@ public class GuessTheCountryActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+    private void updateUI() {
+        guessTheCountryLogic.incrementQuestionIndex();
+        for (MaterialButton button : guessTheCountry_BTN_options) {
+            button.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.white));
+        }
+        guessTheCountry_LBL_score.setText(String.format("Score: %d", guessTheCountryLogic.getScore()));
+        currentCountry = guessTheCountryLogic.getRandomCountryForMainQuestion();
+        if(currentCountry!=null)
+        {
+            List<String> answers = guessTheCountryLogic.getAdditionalAnswers(currentCountry);
+            imageLoader.load(currentCountry.getFlagImage(), R.drawable.ic_launcher_background, guessTheCountry_IMG_flag);
+            for (int i = 0; i < guessTheCountry_BTN_options.length; i++) {
+                guessTheCountry_BTN_options[i].setText(answers.get(i));
+            }
+        }
+    }
     private void finishGame(String result) {
         stopTimer();
         if(result.equals("Won"))
@@ -172,7 +187,6 @@ public class GuessTheCountryActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
     private void showEndGameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String timeMessage;
@@ -190,29 +204,11 @@ public class GuessTheCountryActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
     private void navigateToGameMenu() {
         Intent intent = new Intent(this, GamesMainPage.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
-    }
-
-    private void updateUI() {
-        guessTheCountryLogic.incrementQuestionIndex();
-        for (MaterialButton button : guessTheCountry_BTN_options) {
-            button.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.white));
-        }
-        guessTheCountry_LBL_score.setText(String.format("Score: %d", guessTheCountryLogic.getScore()));
-        currentCountry = guessTheCountryLogic.getRandomCountryForMainQuestion();
-        if(currentCountry!=null)
-        {
-            List<String> answers = guessTheCountryLogic.getAdditionalAnswers(currentCountry);
-            imageLoader.load(currentCountry.getFlagImage(), R.drawable.ic_launcher_background, guessTheCountry_IMG_flag);
-            for (int i = 0; i < guessTheCountry_BTN_options.length; i++) {
-                guessTheCountry_BTN_options[i].setText(answers.get(i));
-            }
-        }
     }
 
     private void findViews() {

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,9 +61,6 @@ public class MemoryGameActivity extends AppCompatActivity implements TimerContro
             }
 
         };
-
-
-        Log.d("GLM", "Level: " + level + ", cols: " + cols + ", rows: " + rows);
         memoryGame_RCV_table.setLayoutManager(gridLayoutManager);
 
         memoryGame_RCV_table.setAdapter(adapter);
