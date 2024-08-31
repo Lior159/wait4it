@@ -25,6 +25,7 @@ import okhttp3.Response;
 
 public class HttpUtil {
     private static OkHttpClient client = new OkHttpClient();
+    private static final String HOST_URL = "https://wait4it.azurewebsites.net/";
 
     public static void get(String url, HttpCallback callback) {
         Request request = new Request.Builder().url(url).build();
@@ -46,7 +47,7 @@ public class HttpUtil {
     }
 
     public static void signup(String email, String username, String password, HttpCallback callback) {
-        String url = "http://192.168.7.7:8000/signup";
+        String url = HOST_URL + "/signup";
         RequestBody requestBody = new FormBody.Builder()
                 .add("username", username)
                 .add("email", email)
@@ -72,7 +73,7 @@ public class HttpUtil {
     }
 
     public static void login(String userName, String password, HttpCallback callback) {
-        String url = "http://192.168.7.7:8000/login";
+        String url = HOST_URL + "/login";
         RequestBody requestBody = new FormBody.Builder()
                 .add("username", userName)
                 .add("password", password)
@@ -97,7 +98,7 @@ public class HttpUtil {
     }
 
     public static void validateToken(String userName, String jwtToken, HttpCallback callback) {
-        String url = "http://192.168.7.7:8000/validate";
+        String url = HOST_URL + "/validate";
         RequestBody requestBody = new FormBody.Builder()
                 .add("username", userName)
                 .add("jwtToken", jwtToken)
