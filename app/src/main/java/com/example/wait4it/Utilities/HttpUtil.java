@@ -25,7 +25,7 @@ import okhttp3.Response;
 
 public class HttpUtil {
     private static OkHttpClient client = new OkHttpClient();
-    private static final String HOST_URL = "https://wait4it.azurewebsites.net/";
+    private static final String HOST_URL = "https://wait4it.azurewebsites.net";
 
     public static void get(String url, HttpCallback callback) {
         Request request = new Request.Builder().url(url).build();

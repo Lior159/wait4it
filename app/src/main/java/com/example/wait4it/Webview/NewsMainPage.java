@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NewsMainPage extends AppCompatActivity {
+    private static final String HOST_URL = "https://wait4it.azurewebsites.net";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,7 @@ public class NewsMainPage extends AppCompatActivity {
         });
 
 
-        String url = String.format("http://192.168.7.7:8000/news?username=%s&token=%s", username, jwtToken);
+        String url = String.format("%s/news?username=%s&token=%s", HOST_URL, username, jwtToken);
         webView.loadUrl(url);
 
     }

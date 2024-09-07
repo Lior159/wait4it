@@ -15,6 +15,7 @@ import com.example.wait4it.R;
 import com.example.wait4it.Utilities.AuthUtil;
 
 public class PodcastsMainPage extends AppCompatActivity {
+    private static final String HOST_URL = "https://wait4it.azurewebsites.net";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class PodcastsMainPage extends AppCompatActivity {
         });
 
 
-        String url = String.format("http://192.168.7.7:8000/podcasts?username=%s&token=%s", username, jwtToken);
+        String url = String.format("%s/podcasts?username=%s&token=%s", HOST_URL, username, jwtToken);
         webView.loadUrl(url);
     }
 }
