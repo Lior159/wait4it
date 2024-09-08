@@ -12,6 +12,7 @@ public class Memory_Menu extends AppCompatActivity {
     private MaterialTextView memoryGame_LBL_easy;
     private MaterialTextView memoryGame_LBL_normal;
     private MaterialTextView memoryGame_LBL_hard;
+    private int points;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

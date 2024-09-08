@@ -1,5 +1,6 @@
 package com.example.wait4it.Games.UI;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,8 @@ public class GamesMainPage extends AppCompatActivity {
     private RecyclerView gamesMain_RCV_list;
     private GamesAdapter adapter;
     private GameList list;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
 
     @Override
@@ -36,7 +39,45 @@ public class GamesMainPage extends AppCompatActivity {
         gamesMain_RCV_list.setLayoutManager(linearLayoutManager);
         gamesMain_RCV_list.setAdapter(adapter);
 
+
+        sharedPreferences = getSharedPreferences("GamePoints", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        if (!sharedPreferences.contains("newPoints")) {
+            editor.putInt("newPoints", 0);
+            editor.apply();
+        }
     }
+
+    @Override
+    public void onBackPressed() {
+        // Update points in the user's DB before exiting
+        int totalPoints = sharedPreferences.getInt("newPoints", 0);
+
+        // Assuming you have a method to update the user's DB with the points
+        updatePointsInDatabase(totalPoints);
+
+        // Now call the super method to handle the actual back navigation
+        super.onBackPressed();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        int totalPoints = sharedPreferences.getInt("newPoints", 0);
+        updatePointsInDatabase(totalPoints);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        int totalPoints = sharedPreferences.getInt("newPoints", 0);
+        updatePointsInDatabase(totalPoints);
+    }
+
+    private void updatePointsInDatabase(int points) {
+        // Your logic for updating the points in the user's database
+    }
+
 
     private void findViews() {
         gamesMain_LBL_title = findViewById(R.id.gamesMain_LBL_title);

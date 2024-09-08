@@ -46,4 +46,6 @@ dependencies {
     implementation("androidx.webkit:webkit:1.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation("androidx.drawerlayout:drawerlayout:1.1.1")
+
 }
