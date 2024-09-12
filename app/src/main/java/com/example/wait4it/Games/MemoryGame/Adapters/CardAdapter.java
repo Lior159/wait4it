@@ -2,6 +2,7 @@ package com.example.wait4it.Games.MemoryGame.Adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Card> cards;
     private MemoryGameLogic memoryGameLogic;
+    private boolean isTryFindMatch = false;
 
     public CardAdapter(Context context, int numCards, TimerControlListener timerControlListener) {
         this.context = context;
@@ -103,8 +105,26 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 imageLoader.load(R.drawable.card_back, R.drawable.memorygame_card_back_temp, holder.memoryGame_IMG_cardImage);
 
             holder.memoryGame_IMG_cardImage.setOnClickListener(v->{
-                memoryGameLogic.flipCard(position);
-                notifyDataSetChanged();
+                if(!isTryFindMatch)
+                {
+                    isTryFindMatch = true;
+                    memoryGameLogic.flipCard(position);
+                    notifyDataSetChanged();
+                }
+                else
+                {
+                    disableAllCards(holder);
+                    memoryGameLogic.flipCard(position);
+                    notifyDataSetChanged();
+
+                    new Handler().postDelayed(()->{
+                        enableAllCards();
+                    },400);
+
+
+
+                    isTryFindMatch = false;
+                }
             });
         }
         else{
@@ -114,61 +134,29 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     }
 
+    private void enableAllCards() {
+        for (int i = 0; i < cards.size(); i++) {
+            Card cardTemp = cards.get(i);
+            if(!cardTemp.getVisible())
+                notifyItemChanged(i);
+        }
+
+    }
+
+
+    private void disableAllCards(ViewHolder holder){
+        for (int i = 0; i < cards.size(); i++) {
+            holder.itemView.setClickable(false);
+        }
+    }
+    
+    
+
     @Override
     public int getItemCount() {
         return cards.size();
     }
 
-    /*
-        @Override
-        public int getCount() {
-            return cards.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return cards.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-       @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if(convertView == null){
-                convertView = inflater.inflate(R.layout.memorygame_card_item, parent,false);
-                holder = new ViewHolder();
-
-                convertView.setTag(holder);
-            }
-            else
-                holder = (ViewHolder) convertView.getTag();
-
-
-            Card card = cards.get(position);
-            ImageLoader imageLoader = new ImageLoader(context);
-            if(card.getVisible()){
-                if(card.isFlipped())
-                    imageLoader.load(card.getPrimaryImageId(), card.getSecondaryImageId(), holder.cardImage);
-                else
-                    imageLoader.load(R.drawable.memorygame_card_back,R.drawable.memorygame_card_back_temp, holder.cardImage);
-
-                convertView.setOnClickListener(v->{
-                    memoryGameLogic.flipCard(position);
-                    notifyDataSetChanged();
-                });
-            }
-            else
-            {
-                holder.cardImage.setVisibility(View.INVISIBLE);
-                convertView.setOnClickListener(null);
-            }
-            return convertView;
-        }
-        */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ShapeableImageView memoryGame_IMG_cardImage;
 

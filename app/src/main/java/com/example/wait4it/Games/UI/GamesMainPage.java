@@ -55,6 +55,8 @@ public class GamesMainPage extends AppCompatActivity {
         int totalPoints = sharedPreferences.getInt("newPoints", 0);
 
         // Assuming you have a method to update the user's DB with the points
+        editor.remove("newPoints");
+        editor.apply();
         updatePointsInDatabase(totalPoints);
 
         // Now call the super method to handle the actual back navigation
@@ -64,6 +66,8 @@ public class GamesMainPage extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         int totalPoints = sharedPreferences.getInt("newPoints", 0);
+        editor.remove("newPoints");
+        editor.apply();
         updatePointsInDatabase(totalPoints);
     }
 
@@ -71,6 +75,8 @@ public class GamesMainPage extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         int totalPoints = sharedPreferences.getInt("newPoints", 0);
+        editor.remove("newPoints");
+        editor.apply();
         updatePointsInDatabase(totalPoints);
     }
 
