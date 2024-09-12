@@ -115,7 +115,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:orientation="vertical"
-        android:background="@android:color/holo_blue_bright"
+        android:background="@color/cream"
         android:padding="16dp">
 
         <!-- Username, email, points -->
