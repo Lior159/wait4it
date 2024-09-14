@@ -1,9 +1,7 @@
 package com.example.wait4it.Webview;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -17,24 +15,18 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.AuthUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+public class ArticlesMainPage extends AppCompatActivity {
 
-public class NewsMainPage extends AppCompatActivity {
     private static final String HOST_URL = "https://wait4it.azurewebsites.net";
     WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_main_page);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_articles_main_page);
 
-        webView = (WebView) findViewById(R.id.news_WEBVIEW_webView);
-
+        webView = (WebView) findViewById(R.id.articles_WEBVIEW_webView);
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -49,11 +41,10 @@ public class NewsMainPage extends AppCompatActivity {
             }
         });
 
-        String jwtToken = AuthUtil.getJwtToken(NewsMainPage.this);
-        String username = AuthUtil.getUsername(NewsMainPage.this);
+        String jwtToken = AuthUtil.getJwtToken(ArticlesMainPage.this);
+        String username = AuthUtil.getUsername(ArticlesMainPage.this);
 
         webView.getSettings().setJavaScriptEnabled(true);
-
 
         webView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request){
@@ -64,10 +55,8 @@ public class NewsMainPage extends AppCompatActivity {
             }
         });
 
-
-        String url = String.format("%s/news?username=%s&token=%s", HOST_URL, username, jwtToken);
+        String url = String.format("%s/articles?username=%s&token=%s", HOST_URL, username, jwtToken);
         webView.loadUrl(url);
-
     }
 
     private boolean shouldInterceptBackPress() {

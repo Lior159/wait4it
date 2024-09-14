@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.wait4it.Games.UI.GamesMainPage;
+import com.example.wait4it.Webview.ArticlesMainPage;
 import com.example.wait4it.Webview.NewsMainPage;
 import com.example.wait4it.Webview.PodcastsMainPage;
 import com.example.wait4it.R;
@@ -29,16 +30,16 @@ public class MainActivity extends AppCompatActivity {
         loadImages();
         //handleButtons();
         main_BTN_games.setOnClickListener(v->{
-            Intent intent = new Intent(this, GamesMainPage.class);
-            startActivity(intent);
+            startActivity(new Intent(this, GamesMainPage.class));
         });
         main_BTN_podcasts.setOnClickListener(v->{
-            Intent intent = new Intent(this, PodcastsMainPage.class);
-            startActivity(intent);
+            startActivity(new Intent(this, PodcastsMainPage.class));
         });
         main_BTN_news.setOnClickListener(v->{
-            Intent intent = new Intent(this, NewsMainPage.class);
-            startActivity(intent);
+            startActivity(new Intent(this, NewsMainPage.class));
+        });
+        main_BTN_articles.setOnClickListener(v->{
+            startActivity(new Intent(this, ArticlesMainPage.class));
         });
     }
 
