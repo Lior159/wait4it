@@ -20,7 +20,8 @@
             android:exported="false" />
         <activity
             android:name=".UI.AuthActivity"
-            android:exported="true">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,12 +54,15 @@
             android:exported="false" />
         <activity
             android:name=".UI.RegisterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".UI.LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".UI.MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
     </application>
 

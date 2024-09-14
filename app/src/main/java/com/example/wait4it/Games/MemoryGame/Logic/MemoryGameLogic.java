@@ -11,6 +11,12 @@ import com.example.wait4it.Games.MemoryGame.Model.Card;
 import java.util.Arrays;
 
 public class MemoryGameLogic {
+    private final int BASE_POINTS = 300;
+    private final int EASY_MAX_MATCHES = 6;
+    private final int NORMAL_MAX_MATCHES = 8;
+    private final int HARD_MAX_MATCHES = 15;
+    private int score;
+    int pointsDeduction;
     private int[] flippedIndices;
     private CardAdapter adapter;
     private Context context;
@@ -27,8 +33,27 @@ public class MemoryGameLogic {
         this.timerControlListener = timerControlListener;
         isTimeStarted = false;
         this.maxMatches = maxMatches;
+        setStartingScore();
         this.countMatches = 0;
     }
+
+    private void setStartingScore() {
+        switch(maxMatches){
+            case EASY_MAX_MATCHES:
+                score = BASE_POINTS;
+                pointsDeduction = 10;
+                break;
+            case NORMAL_MAX_MATCHES:
+                score = BASE_POINTS*3;
+                pointsDeduction = 20;
+                break;
+            case HARD_MAX_MATCHES:
+                score=BASE_POINTS*6;
+
+        }
+
+    }
+
     public void flipCard(int position)
     {
         if(!isTimeStarted)
@@ -45,6 +70,8 @@ public class MemoryGameLogic {
         {
             card.setFlipped(true);
             card.incrementCount();
+            updateScore();
+
             //adapter.notifyDataSetChanged();
             if(flippedIndices[0] == -1){
                 flippedIndices[0] = position;
@@ -52,6 +79,7 @@ public class MemoryGameLogic {
             }
             else if(flippedIndices[1] == -1)
             {
+
                 flippedIndices[1] = position;
                 adapter.notifyDataSetChanged();
                 checkForMatch();
@@ -59,6 +87,12 @@ public class MemoryGameLogic {
             else
                 return;
         }
+    }
+
+    private void updateScore() {
+        score-= pointsDeduction;
+        if(score<0)
+            score=0;
     }
 
     private void checkForMatch() {
@@ -72,6 +106,7 @@ public class MemoryGameLogic {
         }
         else {
             Handler handler = new Handler();
+
             handler.postDelayed(()->{
                 flipBack();
             }, 400);
@@ -87,7 +122,7 @@ public class MemoryGameLogic {
         secondCard.setVisible(false);
         countMatches++;
         if(countMatches == maxMatches)
-            timerControlListener.onGameCompleted();
+            timerControlListener.onGameCompleted(getScore());
         adapter.notifyDataSetChanged();
     }
     private void flipBack() {
@@ -95,5 +130,9 @@ public class MemoryGameLogic {
         ((Card) adapter.getItem(flippedIndices[1])).setFlipped(false);
         adapter.notifyDataSetChanged();
         Arrays.fill(flippedIndices, -1);
+    }
+
+    public int getScore(){
+        return this.score;
     }
 }

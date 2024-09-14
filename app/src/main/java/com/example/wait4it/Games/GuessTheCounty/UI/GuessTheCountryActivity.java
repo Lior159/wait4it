@@ -1,6 +1,7 @@
 package com.example.wait4it.Games.GuessTheCounty.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -182,11 +183,22 @@ public class GuessTheCountryActivity extends AppCompatActivity {
         builder.setTitle("Congratulations!");
         builder.setMessage(timeMessage);
         builder.setPositiveButton("OK", (dialog, id) -> {
+            addPoints(guessTheCountryLogic.getScore());
             navigateToGameMenu();
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void addPoints(int pointsEarned) {
+        SharedPreferences sharedPreferences = getSharedPreferences("GamePoints", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        int currentPoints = sharedPreferences.getInt("newPoints", 0);
+        editor.putInt("newPoints", currentPoints + pointsEarned);
+        editor.apply();
+    }
+
     private void showEndGameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String timeMessage;

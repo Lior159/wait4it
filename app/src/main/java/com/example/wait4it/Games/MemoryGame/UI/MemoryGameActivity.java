@@ -102,27 +102,28 @@ public class MemoryGameActivity extends AppCompatActivity implements TimerContro
     }
 
     @Override
-    public void onGameCompleted() {
-        endGame();
+    public void onGameCompleted(int score) {
+        endGame(score);
     }
 
-    public void endGame(){
+    public void endGame(int score){
         stopTimer();
         long millis = SystemClock.elapsedRealtime() - startTime;
         int seconds = (int) (millis / 1000);
         int minutes = seconds / 60;
         seconds = seconds % 60;
-        showEndGameDialog(minutes, seconds);
+        showEndGameDialog(minutes, seconds, score);
 
     }
 
-    private void showEndGameDialog(int minutes, int seconds) {
+    private void showEndGameDialog(int minutes, int seconds, int score) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String timeMessage;
+
         if(minutes > 0)
-            timeMessage = String.format("You cleared the level in %d minutes and %d seconds!", minutes,seconds);
+            timeMessage = String.format("You cleared the level in %d minutes and %d seconds!\nYour score is: %d", minutes,seconds, score);
         else
-            timeMessage = String.format("You cleared the level in %d seconds!",seconds);
+            timeMessage = String.format("You cleared the level in %d seconds!\nYour score is: %d\"",seconds, score);
 
         builder.setTitle("Congratulations!");
         builder.setMessage(timeMessage);
