@@ -11,14 +11,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.wait4it.Games.UI.GamesMainPage;
-<<<<<<< HEAD
-import com.example.wait4it.Webview.ArticlesMainPage;
-import com.example.wait4it.Webview.NewsMainPage;
-import com.example.wait4it.Webview.PodcastsMainPage;
-=======
->>>>>>> Points
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.ImageLoader;
+import com.example.wait4it.Webview.ArticlesMainPage;
 import com.example.wait4it.Webview.NewsMainPage;
 import com.example.wait4it.Webview.PodcastsMainPage;
 import com.google.android.material.button.MaterialButton;

@@ -3,13 +3,13 @@ package com.example.wait4it.Model;
 public class User {
     private String email;
     private String username;
-    private String password;
+    private int points;
 
     public User() {
     }
-    public User(String email, String password, String username) {
+    public User(String email, String point, String username) {
         this.email = email;
-        this.password = password;
+        this.points = points;
         this.username = username;
     }
 
@@ -31,12 +31,12 @@ public class User {
         return this;
     }
 
-    public String getPassword() {
-        return password;
+    public int getPoints() {
+        return this.points;
     }
 
-    public User setPassword(String password) {
-        this.password = password;
+    public User setPoints(int points) {
+        this.points = points;
         return this;
     }
 }
