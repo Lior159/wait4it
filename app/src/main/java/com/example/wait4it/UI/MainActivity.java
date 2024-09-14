@@ -11,6 +11,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.wait4it.Games.UI.GamesMainPage;
+import com.example.wait4it.Model.User;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.ImageLoader;
 import com.example.wait4it.Webview.ArticlesMainPage;
@@ -38,13 +39,14 @@ public class MainActivity extends AppCompatActivity {
     private ShapeableImageView main_BTN_news;
     private ShapeableImageView main_BTN_articles;
     private ShapeableImageView main_BTN_podcasts;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         findViews();
+        setUser();
         initDrawer();
         loadImages();
         //handleButtons();
@@ -72,7 +74,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setUser() {
+        user = new User();
+        user.setUsername("Michael");
+        user.setEmail("Michael.sc2606@gmail.com");
+        user.setPoints(150);
+        //getFromDB
+
+    }
+
     private void initDrawer() {
+        menu_LBL_username.setText(String.format("Username: \n%s\n", user.getUsername()));
+        menu_LBL_email.setText(String.format("Email: \n%s\n", user.getEmail()));
+        menu_LBL_points.setText(String.format("Points: \n%d\n", user.getPoints()));
 
         //get from DB: username, email, points
         menu_LBL_changePassword.setOnClickListener(v->{
@@ -95,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
         changePassword_BTN_change.setOnClickListener(v->{
             String temp = changePassword_ET_passwordEntry.getText().toString().trim();
-            if(!temp.isEmpty() || temp!=null)
+            if(!temp.isEmpty() && temp!=null)
                 Toast.makeText(this, "new pass is " + temp, Toast.LENGTH_SHORT).show();
         });
 

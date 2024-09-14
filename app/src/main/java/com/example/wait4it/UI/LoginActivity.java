@@ -1,31 +1,20 @@
 package com.example.wait4it.UI;
 
-import static com.example.wait4it.Utilities.AuthUtil.getJwtToken;
-import static com.example.wait4it.Utilities.AuthUtil.getUsername;
 import static com.example.wait4it.Utilities.AuthUtil.saveJwtToken;
 import static com.example.wait4it.Utilities.AuthUtil.saveUsername;
-import static com.example.wait4it.Utilities.HttpUtil.validateToken;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.wait4it.Interfaces.HttpCallback;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.HttpUtil;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textview.MaterialTextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText login_ET_password;
     private MaterialButton login_BTN_login;
     private MaterialButton login_BTN_signup;
+
 
 
     @Override
