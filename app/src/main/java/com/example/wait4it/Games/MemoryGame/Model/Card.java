@@ -44,5 +44,11 @@ public class Card {
     public int getCount(){
         return this.count;
     }
+
+    @Override
+    public String toString()
+    {
+        return "IsVisible = " + this.getVisible() + ", Flipped = " + this.isFlipped() + ", imageId = " + this.getPrimaryImageId();
+    }
 }
 

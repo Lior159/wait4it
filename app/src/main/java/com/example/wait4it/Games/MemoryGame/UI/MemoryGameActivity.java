@@ -140,15 +140,4 @@ public class MemoryGameActivity extends AppCompatActivity implements TimerContro
         startActivity(intent);
         finish();
     }
-
-    /*
-    private void configureGridView() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int screenWidth = displayMetrics.widthPixels;
-        int columnWidth = (screenWidth - memoryGame_TBL_grid.getPaddingLeft() - memoryGame_TBL_grid.getPaddingRight() - ((cols - 1) * 10)) / cols;
-        memoryGame_TBL_grid.setNumColumns(cols);
-        memoryGame_TBL_grid.setColumnWidth(columnWidth);
-    }
-     */
 }

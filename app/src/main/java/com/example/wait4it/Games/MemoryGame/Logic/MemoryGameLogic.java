@@ -2,6 +2,7 @@ package com.example.wait4it.Games.MemoryGame.Logic;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.wait4it.Games.MemoryGame.Adapters.CardAdapter;
@@ -41,15 +42,16 @@ public class MemoryGameLogic {
         switch(maxMatches){
             case EASY_MAX_MATCHES:
                 score = BASE_POINTS;
-                pointsDeduction = 10;
+                pointsDeduction = 5;
                 break;
             case NORMAL_MAX_MATCHES:
                 score = BASE_POINTS*3;
-                pointsDeduction = 20;
+                pointsDeduction = 10;
                 break;
             case HARD_MAX_MATCHES:
                 score=BASE_POINTS*6;
-
+                pointsDeduction = 15;
+                break;
         }
 
     }
@@ -76,11 +78,13 @@ public class MemoryGameLogic {
             if(flippedIndices[0] == -1){
                 flippedIndices[0] = position;
                 adapter.notifyDataSetChanged();
+                Log.d("MemoryGameLog","FlippedIndices[0] = " + flippedIndices[0]);
             }
             else if(flippedIndices[1] == -1)
             {
 
                 flippedIndices[1] = position;
+                Log.d("MemoryGameLog","FlippedIndices[1] = " + flippedIndices[1]);
                 adapter.notifyDataSetChanged();
                 checkForMatch();
             }
@@ -99,35 +103,45 @@ public class MemoryGameLogic {
         Card firstCard = (Card) adapter.getItem(flippedIndices[0]);
         Card secondCard = (Card) adapter.getItem(flippedIndices[1]);
 
+        Log.d("MemoryGameLog", "firstCard: " + firstCard.toString());
+        Log.d("MemoryGameLog", "secondCard: " + secondCard.toString());
+
         if (firstCard.getPrimaryImageId() == secondCard.getPrimaryImageId())
         {
-            handleMatch();
+            handleMatch(firstCard,secondCard);
             Arrays.fill(flippedIndices, -1);
         }
         else {
+            updateScore();
             Handler handler = new Handler();
 
             handler.postDelayed(()->{
                 flipBack();
             }, 400);
         }
+        adapter.notifyDataSetChanged();
 
     }
 
-    private void handleMatch() {
-        Card firstCard = (Card) adapter.getItem(flippedIndices[0]);
-        Card secondCard = (Card) adapter.getItem(flippedIndices[1]);
-
+    private void handleMatch(Card firstCard, Card secondCard) {
+        Log.d("MemoryGameLog", "invisibling " +flippedIndices[0]);
         firstCard.setVisible(false);
+        Log.d("MemoryGameLog", "invisibling " +flippedIndices[1]);
         secondCard.setVisible(false);
+        adapter.notifyItemChanged(flippedIndices[0]);
+        adapter.notifyItemChanged(flippedIndices[1]);
         countMatches++;
         if(countMatches == maxMatches)
             timerControlListener.onGameCompleted(getScore());
-        adapter.notifyDataSetChanged();
+
     }
     private void flipBack() {
+        Log.d("MemoryGameLog", "unflipping " +flippedIndices[0]);
         ((Card) adapter.getItem(flippedIndices[0])).setFlipped(false);
+        Log.d("MemoryGameLog", "After flip flippedIndices[0]: " + ((Card)(adapter.getItem(flippedIndices[0]))).toString());
+        Log.d("MemoryGameLog", "unflipping " +flippedIndices[1]);
         ((Card) adapter.getItem(flippedIndices[1])).setFlipped(false);
+        Log.d("MemoryGameLog", "After flip flippedIndices[1]: " + ((Card)(adapter.getItem(flippedIndices[1]))).toString());
         adapter.notifyDataSetChanged();
         Arrays.fill(flippedIndices, -1);
     }

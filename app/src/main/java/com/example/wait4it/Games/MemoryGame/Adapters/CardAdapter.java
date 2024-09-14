@@ -2,7 +2,6 @@ package com.example.wait4it.Games.MemoryGame.Adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,48 +87,26 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         Card card = cards.get(position);
         ImageLoader imageLoader = new ImageLoader(context);
 
-//        holder.memoryGame_IMG_cardImage.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-//            @Override
-//            public boolean onPreDraw() {
-//                holder.memoryGame_IMG_cardImage.getViewTreeObserver().removeOnPreDrawListener(this);
-//                int temp = (int) holder.memoryGame_IMG_cardImage.getWidth();
-//                holder.memoryGame_IMG_cardImage.setMaxHeight(50);
-//                return false;
-//            }
-//        });
+        if (!card.getVisible()) {
+            holder.memoryGame_IMG_cardImage.setVisibility(View.INVISIBLE);
+            holder.memoryGame_IMG_cardImage.setOnClickListener(null); // Disable click
+            return;
+        }
 
-        if(card.getVisible()){
+        else{
+            holder.memoryGame_IMG_cardImage.setVisibility(View.VISIBLE);
             if (card.isFlipped())
                 imageLoader.load(card.getPrimaryImageId(), card.getSecondaryImageId(), holder.memoryGame_IMG_cardImage);
             else
                 imageLoader.load(R.drawable.card_back, R.drawable.memorygame_card_back_temp, holder.memoryGame_IMG_cardImage);
 
-            holder.memoryGame_IMG_cardImage.setOnClickListener(v->{
-                if(!isTryFindMatch)
-                {
-                    isTryFindMatch = true;
-                    memoryGameLogic.flipCard(position);
-                    notifyDataSetChanged();
-                }
-                else
-                {
-                    disableAllCards(holder);
-                    memoryGameLogic.flipCard(position);
-                    notifyDataSetChanged();
+            if(card.getVisible() && !card.isFlipped()){
 
-                    new Handler().postDelayed(()->{
-                        enableAllCards();
-                    },400);
-
-
-
-                    isTryFindMatch = false;
-                }
-            });
-        }
-        else{
-            holder.memoryGame_IMG_cardImage.setVisibility(View.INVISIBLE);
-            holder.memoryGame_IMG_cardImage.setOnClickListener(null);
+                holder.memoryGame_IMG_cardImage.setOnClickListener(v->{
+                   memoryGameLogic.flipCard(position);
+                   notifyItemChanged(position);
+                });
+            }
         }
 
     }
