@@ -1,11 +1,13 @@
 package com.example.wait4it.Webview;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,13 +18,30 @@ import com.example.wait4it.Utilities.AuthUtil;
 
 public class PodcastsMainPage extends AppCompatActivity {
     private static final String HOST_URL = "https://wait4it.azurewebsites.net";
+    WebView webView ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_podcasts_main_page);
 
-        WebView webView = (WebView) findViewById(R.id.podcasts_WEBVIEW_webView);
+        webView = (WebView) findViewById(R.id.podcasts_WEBVIEW_webView);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Your custom behavior here
+                if (!shouldInterceptBackPress()) {
+                    // Default behavior (calls the system back press)
+                    if (isEnabled()) {
+                        setEnabled(false);
+                        onBackPressed();  // Or use super.onBackPressed()
+                    }
+                }
+            }
+        });
+
 
         String jwtToken = AuthUtil.getJwtToken(PodcastsMainPage.this);
         String username = AuthUtil.getUsername(PodcastsMainPage.this);
@@ -42,5 +61,14 @@ public class PodcastsMainPage extends AppCompatActivity {
 
         String url = String.format("%s/podcasts?username=%s&token=%s", HOST_URL, username, jwtToken);
         webView.loadUrl(url);
+    }
+
+    private boolean shouldInterceptBackPress() {
+        if (webView.canGoBack()){
+            webView.goBack();
+            return true;
+        }
+        // Custom logic to decide whether to intercept the back press
+        return webView.canGoBack();
     }
 }

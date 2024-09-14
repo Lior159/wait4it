@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 public class NewsMainPage extends AppCompatActivity {
     private static final String HOST_URL = "https://wait4it.azurewebsites.net";
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,21 @@ public class NewsMainPage extends AppCompatActivity {
         setContentView(R.layout.activity_news_main_page);
 
         WebView webView = (WebView) findViewById(R.id.news_WEBVIEW_webView);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Your custom behavior here
+                if (!shouldInterceptBackPress()) {
+                    // Default behavior (calls the system back press)
+                    if (isEnabled()) {
+                        setEnabled(false);
+                        onBackPressed();  // Or use super.onBackPressed()
+                    }
+                }
+            }
+        });
+
         String jwtToken = AuthUtil.getJwtToken(NewsMainPage.this);
         String username = AuthUtil.getUsername(NewsMainPage.this);
 
@@ -51,5 +68,14 @@ public class NewsMainPage extends AppCompatActivity {
         String url = String.format("%s/news?username=%s&token=%s", HOST_URL, username, jwtToken);
         webView.loadUrl(url);
 
+    }
+
+    private boolean shouldInterceptBackPress() {
+        if (webView.canGoBack()){
+            webView.goBack();
+            return true;
+        }
+        // Custom logic to decide whether to intercept the back press
+        return webView.canGoBack();
     }
 }
