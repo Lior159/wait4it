@@ -1,22 +1,17 @@
 package com.example.wait4it.UI;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.util.PatternsCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.wait4it.Interfaces.HttpCallback;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.HttpUtil;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
@@ -31,8 +26,15 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText register_ET_email;
     private TextInputEditText register_ET_password;
     private TextInputEditText register_ET_username;
-    ;
+
     private MaterialButton register_BTN_register;
+
+    private static final String SHARED_PREFS = "UserInfo";
+    private final static String USERNAME = "UserName";
+    private final static String EMAIL = "Email";
+
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,12 @@ public class RegisterActivity extends AppCompatActivity {
         String username = register_ET_username.getText().toString().trim();
         String email = register_ET_email.getText().toString().trim();
         String password = register_ET_password.getText().toString().trim();
+
+        sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putString(USERNAME, username);
+        editor.putString(EMAIL,email);
+        editor.apply();
 
         Log.d("Register", "Username: " + username + ", Email: " + email + ", Password: " + password);
 

@@ -1,6 +1,7 @@
 package com.example.wait4it.Games.MemoryGame.Adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
+
+
     private Context context;
     private ArrayList<Card> cards;
     private MemoryGameLogic memoryGameLogic;

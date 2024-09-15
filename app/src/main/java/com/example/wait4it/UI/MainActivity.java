@@ -1,9 +1,10 @@
 package com.example.wait4it.UI;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,24 +12,29 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.wait4it.Games.UI.GamesMainPage;
+import com.example.wait4it.Model.User;
 import com.example.wait4it.R;
 import com.example.wait4it.Utilities.ImageLoader;
 import com.example.wait4it.Webview.ArticlesMainPage;
 import com.example.wait4it.Webview.NewsMainPage;
 import com.example.wait4it.Webview.PodcastsMainPage;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String SHARED_PREFS_POINTS = "GamePoints";
+    private static final String SHARED_PREFS_USER = "UserInfo";
+    private static final String POINTS_KEY = "newPoints";
+    private static final String USERNAME_KEY = "UserName";
+    private static final String EMAIL_KEY = "Email";
     private DrawerLayout main_DRAWER_menu;
 
     private MaterialTextView menu_LBL_username;
     private MaterialTextView menu_LBL_email;
     private MaterialTextView menu_LBL_points;
     private MaterialTextView menu_LBL_redeem;
-    private MaterialTextView menu_LBL_changePassword;
+
     private MaterialTextView menu_LBL_about;
 
     private ImageLoader imageLoader;
@@ -39,11 +45,18 @@ public class MainActivity extends AppCompatActivity {
     private ShapeableImageView main_BTN_articles;
     private ShapeableImageView main_BTN_podcasts;
 
+    private User user;
+    private SharedPreferences sharedPreferencesPoints;
+    private SharedPreferences sharedPreferencesUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferencesUser = getSharedPreferences(SHARED_PREFS_USER,MODE_PRIVATE);
+        sharedPreferencesPoints = getSharedPreferences(SHARED_PREFS_POINTS, MODE_PRIVATE);
 
+        setUser();
         findViews();
         initDrawer();
         loadImages();
@@ -72,33 +85,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setUser() {
+        user = new User();
+        String username = sharedPreferencesUser.getString(USERNAME_KEY, "Failed to get username" );
+        String email = sharedPreferencesUser.getString(EMAIL_KEY, "Failed to get email" );
+        int points = sharedPreferencesPoints.getInt(POINTS_KEY,0);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPoints(points);
+    }
+
+    @SuppressLint("DefaultLocale")
     private void initDrawer() {
 
-        //get from DB: username, email, points
-        menu_LBL_changePassword.setOnClickListener(v->{
-            changePassword();
-        });
+        menu_LBL_username.setText(String.format("Username: \n%s\n", user.getUsername()));
+        menu_LBL_email.setText(String.format("Email: \n%s\n", user.getEmail()));
+        menu_LBL_points.setText(String.format("Points: \n%d\n", user.getPoints()));
+
+
         menu_LBL_about.setOnClickListener(v->{
             showAbout();
         });
-    }
-
-    private void changePassword() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View popupView = getLayoutInflater().inflate(R.layout.change_password,null);
-        builder.setTitle("Change password");
-        TextInputEditText changePassword_ET_passwordEntry = popupView.findViewById(R.id.changePassword_ET_passwordEntry);
-        MaterialButton changePassword_BTN_change = popupView.findViewById(R.id.changePassword_BTN_change);
-        builder.setView(popupView);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        changePassword_BTN_change.setOnClickListener(v->{
-            String temp = changePassword_ET_passwordEntry.getText().toString().trim();
-            if(!temp.isEmpty() || temp!=null)
-                Toast.makeText(this, "new pass is " + temp, Toast.LENGTH_SHORT).show();
-        });
-
     }
 
     private void showAbout() {
@@ -123,6 +130,14 @@ public class MainActivity extends AppCompatActivity {
         imageLoader.load(R.drawable.ic_more_vert, R.drawable.ic_launcher_background, main_IMG_menu);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        int points = sharedPreferencesPoints.getInt(POINTS_KEY,0);
+        menu_LBL_points.setText(String.format("Points: \n%d\n", points));
+    }
+
     private void findViews() {
         main_DRAWER_menu = findViewById(R.id.main_DRAWER_menu);
         main_IMG_menu = findViewById(R.id.main_IMG_menu);
@@ -135,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
         menu_LBL_email = findViewById((R.id.menu_LBL_email));
         menu_LBL_points = findViewById((R.id.menu_LBL_points));
         menu_LBL_redeem = findViewById((R.id.menu_LBL_redeem));
-        menu_LBL_changePassword = findViewById((R.id.menu_LBL_changePassword));
         menu_LBL_about = findViewById((R.id.menu_LBL_about));
     }
 }

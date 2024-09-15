@@ -186,6 +186,7 @@ public class HangmanActivity extends AppCompatActivity {
         if(hangmanLogic.wordIsDone())
         {
             hangmanLogic.incrementScore();
+            hangman_LBL_score.setText(String.format("Score: %d", hangmanLogic.getScore()));
             if(hangmanLogic.isGameEnded()){
                 finishGame("Won");
             }

@@ -18,9 +18,12 @@ public class GamesMainPage extends AppCompatActivity {
     private RecyclerView gamesMain_RCV_list;
     private GamesAdapter adapter;
     private GameList list;
+
+    private static final String SHARED_PREFS = "GamePoints";
+    private static final String MAIN_POINTS_KEY = "newPoints";
+    private static final String ADDITIONAL_POINTS_KEY = "additionalPoints";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +43,26 @@ public class GamesMainPage extends AppCompatActivity {
         gamesMain_RCV_list.setAdapter(adapter);
 
 
-        sharedPreferences = getSharedPreferences("GamePoints", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        if (!sharedPreferences.contains("newPoints")) {
-            editor.putInt("newPoints", 0);
+        if (!sharedPreferences.contains(ADDITIONAL_POINTS_KEY)) {
+            editor.putInt(ADDITIONAL_POINTS_KEY, 0);
             editor.apply();
         }
     }
+    private void transferPointsToMain(){
+        int additionalPoints = sharedPreferences.getInt(ADDITIONAL_POINTS_KEY,0);
+        int currentPoints = sharedPreferences.getInt(MAIN_POINTS_KEY,0);
+        int updatedPoints = additionalPoints + currentPoints;
+
+        editor.putInt(MAIN_POINTS_KEY,updatedPoints);
+        editor.apply();
+
+        editor.putInt(ADDITIONAL_POINTS_KEY,0);
+        editor.apply();
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -55,9 +70,7 @@ public class GamesMainPage extends AppCompatActivity {
         int totalPoints = sharedPreferences.getInt("newPoints", 0);
 
         // Assuming you have a method to update the user's DB with the points
-        editor.remove("newPoints");
-        editor.apply();
-        updatePointsInDatabase(totalPoints);
+        transferPointsToMain();
 
         // Now call the super method to handle the actual back navigation
         super.onBackPressed();
@@ -65,23 +78,13 @@ public class GamesMainPage extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        int totalPoints = sharedPreferences.getInt("newPoints", 0);
-        editor.remove("newPoints");
-        editor.apply();
-        updatePointsInDatabase(totalPoints);
+        transferPointsToMain();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        int totalPoints = sharedPreferences.getInt("newPoints", 0);
-        editor.remove("newPoints");
-        editor.apply();
-        updatePointsInDatabase(totalPoints);
-    }
-
-    private void updatePointsInDatabase(int points) {
-        // Your logic for updating the points in the user's database
+        transferPointsToMain();
     }
 
 

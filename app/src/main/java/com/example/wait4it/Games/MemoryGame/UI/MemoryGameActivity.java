@@ -1,6 +1,7 @@
 package com.example.wait4it.Games.MemoryGame.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -123,15 +124,25 @@ public class MemoryGameActivity extends AppCompatActivity implements TimerContro
         if(minutes > 0)
             timeMessage = String.format("You cleared the level in %d minutes and %d seconds!\nYour score is: %d", minutes,seconds, score);
         else
-            timeMessage = String.format("You cleared the level in %d seconds!\nYour score is: %d\"",seconds, score);
+            timeMessage = String.format("You cleared the level in %d seconds!\nYour score is: %d",seconds, score);
 
         builder.setTitle("Congratulations!");
         builder.setMessage(timeMessage);
         builder.setPositiveButton("OK", (dialog, id) -> {
+            addPoints(score);
             navigateToGameMenu();
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void addPoints(int pointsEarned) {
+        SharedPreferences sharedPreferences = getSharedPreferences("GamePoints", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        int currentPoints = sharedPreferences.getInt("newPoints", 0);
+        editor.putInt("newPoints", currentPoints + pointsEarned);
+        editor.apply();
     }
 
     private void navigateToGameMenu() {
